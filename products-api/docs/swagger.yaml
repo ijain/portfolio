@@ -66,8 +66,8 @@ paths:
                   type: string
                   format: password
               example:
-                email: "aurelia.harvey@example.com"
-                password: "password"
+                email: "demo@example.com"
+                password: "demo1234"
       responses:
         '200':
           description: Token generated successfully
@@ -115,6 +115,12 @@ paths:
                   type: string
                 price:
                   type: number
+                stock:
+                type: integer
+            example:
+              name: "Chocolate Cake"
+              price: 25.50
+              stock: 10
       responses:
         '201':
           description: Product created
@@ -162,6 +168,11 @@ paths:
                   type: string
                 price:
                   type: number
+                  stock:
+                type: integer
+            example:
+              price: 12.50
+              stock: 3
       responses:
         '200':
           description: Product updated
