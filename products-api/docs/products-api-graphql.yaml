@@ -1,0 +1,79 @@
+openapi: 3.0.3
+info:
+  title: Product GraphQL API v1.0
+  description: GraphQL API for Product Management
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/graphql
+    description: Local server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+paths:
+  /graphql:
+    post:
+      summary: GraphQL endpoint for Product API
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: GraphQL query or mutation
+                  example: |
+                    query {
+                      products {
+                        id
+                        name
+                        price
+                        stock
+                      }
+                    }
+                variables:
+                  type: object
+                  description: GraphQL variables
+      responses:
+        '200':
+          description: GraphQL query result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      products:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Product'
+

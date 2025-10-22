@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Products API',
+                'title' => 'Booking API',
             ],
             'routes' => [
                 'api' => 'api/documentation',
@@ -14,7 +14,7 @@ return [
                 'use_absolute_path' => true,
                 'annotations' => [],          // empty to disable scanning
                 'docs' => base_path('docs'),  // folder containing your YAML
-                'docs_yaml' => 'products-api-rest.yaml',
+                'docs_yaml' => 'booking-api-rest.yaml',
                 'format_to_use_for_docs' => 'yaml',
             ],
         ],

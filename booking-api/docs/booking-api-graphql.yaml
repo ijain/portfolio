@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: Booking GraphQL API v1.0
+  description: GraphQL API for a booking system
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/graphql
+    description: Local server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        service:
+          type: string
+          example: "Massage"
+        start_time:
+          type: string
+          format: date-time
+          example: "2025-10-25T10:00:00Z"
+        end_time:
+          type: string
+          format: date-time
+          example: "2025-10-25T11:00:00Z"
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+          example: "pending"
+paths:
+  /graphql:
+    post:
+      summary: GraphQL endpoint for Booking API
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: GraphQL query
+                  example: |
+                    query {
+                      bookings {
+                        id
+                        user_id
+                        service
+                        start_time
+                        end_time
+                        status
+                      }
+                    }
+                variables:
+                  type: object
+                  description: GraphQL variables (if needed)
+      responses:
+        '200':
+          description: GraphQL query result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      bookings:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Booking'
