@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\TokenController;
+use App\Http\Controllers\Auth\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ use App\Http\Controllers\Auth\TokenController;
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('products', ProductController::class);
-    Route::get('/user', [App\Http\Controllers\Auth\UserController::class, 'current']); // optional, current user
+    Route::get('/user', [UserController::class, 'current']); // current user
 });
 
 Route::get('/v1/test-token', [TokenController::class, 'generateTestToken']);
