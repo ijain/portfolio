@@ -1,7 +1,7 @@
 {
     "name": "ijain/booking-api",
     "type": "project",
-    "description": "Booking API v1.0. REST + GraphQL (Laravel)",
+    "description": "Booking API v1.0 - REST + GraphQL (Laravel)",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {

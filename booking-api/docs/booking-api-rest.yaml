@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Booking API v1.0
-  description: REST API for a booking system
+  description: REST API for a Booking System
   version: 1.0.0
 servers:
   - url: http://localhost:8000/api
@@ -67,6 +67,8 @@ paths:
   /v1/test-token:
     get:
       summary: Generate a demo token automatically
+      tags:
+        - Auth
       responses:
         '200':
           description: Token generated successfully
@@ -83,6 +85,8 @@ paths:
   /v1/token:
     post:
       summary: Generate token via email/password
+      tags:
+        - Auth
       requestBody:
         required: true
         content:
@@ -124,7 +128,7 @@ paths:
     get:
       summary: Get all services
       tags:
-        - Services
+        - Service
       security:
         - BearerAuth: []
       responses:
@@ -139,7 +143,7 @@ paths:
     post:
       summary: Create a new service
       tags:
-        - Services
+        - Service
       security:
         - BearerAuth: []
       requestBody:
@@ -169,7 +173,7 @@ paths:
     get:
       summary: Get a service by ID
       tags:
-        - Services
+        - Service
       security:
         - BearerAuth: []
       parameters:
@@ -190,7 +194,7 @@ paths:
     put:
       summary: Update a service
       tags:
-        - Services
+        - Service
       security:
         - BearerAuth: []
       parameters:
@@ -224,7 +228,7 @@ paths:
     delete:
       summary: Delete a service
       tags:
-        - Services
+        - Service
       security:
         - BearerAuth: []
       parameters:
@@ -246,7 +250,7 @@ paths:
     get:
       summary: Get all bookings
       tags:
-        - Bookings
+        - Booking
       security:
         - BearerAuth: []
       responses:
@@ -261,7 +265,7 @@ paths:
     post:
       summary: Create a new booking
       tags:
-        - Bookings
+        - Booking
       security:
         - BearerAuth: []
       requestBody:
@@ -302,7 +306,7 @@ paths:
     get:
       summary: Get a booking by ID
       tags:
-        - Bookings
+        - Booking
       security:
         - BearerAuth: []
       parameters:
@@ -323,7 +327,7 @@ paths:
     put:
       summary: Update a booking (service_id and user_id cannot be updated)
       tags:
-        - Bookings
+        - Booking
       security:
         - BearerAuth: []
       parameters:
@@ -363,7 +367,7 @@ paths:
     delete:
       summary: Delete a booking
       tags:
-        - Bookings
+        - Booking
       security:
         - BearerAuth: []
       parameters:

@@ -1,9 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Product API
+  title: Product API v1.0
+  description: REST API for a Product Management System
   version: 1.0.0
 servers:
   - url: http://localhost:8000/api
+    description: Local server
 components:
   securitySchemes:
     BearerAuth:
@@ -11,15 +13,6 @@ components:
       scheme: bearer
       bearerFormat: "Token"
   schemas:
-    Product:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        price:
-          type: number
     User:
       type: object
       properties:
@@ -29,10 +22,21 @@ components:
           type: string
         email:
           type: string
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
 paths:
   /v1/test-token:
     get:
       summary: Generate a demo token automatically
+      tags:
+        - Auth
       responses:
         '200':
           description: Token generated successfully
@@ -49,6 +53,8 @@ paths:
   /v1/token:
     post:
       summary: Generate token via email/password
+      tags:
+        - Auth
       requestBody:
         required: true
         content:
@@ -83,9 +89,14 @@ paths:
         '401':
           description: Invalid credentials
 
+  # --------------------
+  # Product CRUD
+  # --------------------
   /v1/products:
     get:
       summary: Get all products
+      tags:
+        - Products
       security:
         - BearerAuth: []
       responses:
@@ -99,6 +110,8 @@ paths:
                   $ref: '#/components/schemas/Product'
     post:
       summary: Create a new product
+      tags:
+        - Products
       security:
         - BearerAuth: []
       requestBody:
@@ -132,6 +145,8 @@ paths:
   /v1/products/{id}:
     get:
       summary: Get a product by ID
+      tags:
+        - Products
       security:
         - BearerAuth: []
       parameters:
@@ -148,7 +163,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Product'
     put:
-      summary: Update a product by ID
+      summary: Update a product
+      tags:
+        - Products
       security:
         - BearerAuth: []
       parameters:
@@ -180,8 +197,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
     delete:
-      summary: Delete a product by ID
+      summary: Delete a product
+      tags:
+        - Products
       security:
         - BearerAuth: []
       parameters:
@@ -193,3 +214,5 @@ paths:
       responses:
         '204':
           description: Product deleted
+        '404':
+          description: Product not found

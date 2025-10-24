@@ -1,6 +1,6 @@
 {
-    "name": "ijain/products-api",
-    "description": "Products API v1.0. REST + GraphQL (Laravel)",
+    "name": "ijain/product-api",
+    "description": "Products API v1.0 - REST + GraphQL (Laravel)",
     "type": "project",
     "keywords": ["laravel", "framework"],
     "license": "MIT",

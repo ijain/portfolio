@@ -14,7 +14,7 @@ return [
                 'use_absolute_path' => true,
                 'annotations' => [],          // empty to disable scanning
                 'docs' => base_path('docs'),  // folder containing your YAML
-                'docs_yaml' => 'products-api-rest.yaml',
+                'docs_yaml' => 'product-api-rest.yaml',
                 'format_to_use_for_docs' => 'yaml',
             ],
         ],
