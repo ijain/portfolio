@@ -96,7 +96,7 @@ paths:
     get:
       summary: Get all products
       tags:
-        - Products
+        - Product
       security:
         - BearerAuth: []
       responses:
@@ -111,7 +111,7 @@ paths:
     post:
       summary: Create a new product
       tags:
-        - Products
+        - Product
       security:
         - BearerAuth: []
       requestBody:
@@ -146,7 +146,7 @@ paths:
     get:
       summary: Get a product by ID
       tags:
-        - Products
+        - Product
       security:
         - BearerAuth: []
       parameters:
@@ -165,7 +165,7 @@ paths:
     put:
       summary: Update a product
       tags:
-        - Products
+        - Product
       security:
         - BearerAuth: []
       parameters:
@@ -202,7 +202,7 @@ paths:
     delete:
       summary: Delete a product
       tags:
-        - Products
+        - Product
       security:
         - BearerAuth: []
       parameters:
