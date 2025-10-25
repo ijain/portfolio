@@ -3,53 +3,55 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Service;
+use Illuminate\Database\Eloquent\Collection;
 
 class ServiceController extends Controller
 {
-    // List all services
-    public function index()
+     // List all services
+    public function index(): Collection
     {
-        return response()->json(Service::all(), 200);
+        return Service::all();
     }
 
     // Store a new service
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $service = Service::create($request->all());
+        $service = Service::create($validated);
 
-        return response()->json($service, 201);
+        return response($service, 201); // explicit 201 Created
     }
 
     // Show a single service
-    public function show(Service $service)
+    public function show(Service $service): Service
     {
-        return response()->json($service, 200);
+        return $service;
     }
 
     // Update a service
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Service $service): Service
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $service->update($request->all());
+        $service->update($validated);
 
-        return response()->json($service, 200);
+        return $service;
     }
 
     // Delete a service
-    public function destroy(Service $service)
+    public function destroy(Service $service): Response
     {
         $service->delete();
 
-        return response()->json(null, 204);
+        return response()->noContent(); // clean 204 response
     }
 }
