@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -6,13 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductController extends Controller
 {
     // List all products
-    public function index(): Collection
+    public function index(Request $request): LengthAwarePaginator
     {
-        return Product::all();
+         // Get 'per_page' from query params, default to 10
+        $limit = (int) $request->query('limit', 10);
+
+        // Optional: enforce a maximum limit for safety
+        $limit = min($limit, 100);
+
+        return Product::all()->paginate($limit);
     }
 
     // Show a single product
@@ -60,10 +68,10 @@ class ProductController extends Controller
     }
 
     // Alias for destroy
-    public function delete(Product $product): Response
+    /*public function delete(Product $product): Response
     {
         $product->delete();
 
         return response()->noContent();
-    }
+    }*/
 }

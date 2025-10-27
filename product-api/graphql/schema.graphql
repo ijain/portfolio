@@ -52,8 +52,20 @@ type Product {
 }
 
 type Query {
-  products: [Product!]! @all(model: "App\\Models\\Product")
+  "Get a list of products with pagination."
+  products(
+    "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+    name: String @where(operator: "like")
+  ): ProductPaginator! @paginate(model: "App\\Models\\Product", defaultCount: 10)
+
+  "Get a single product by ID."
   product(id: ID! @eq): Product @find(model: "App\\Models\\Product")
+}
+
+# Add this type for the paginated result
+type ProductPaginator {
+  data: [Product!]!
+  paginatorInfo: PaginatorInfo!
 }
 
 type Mutation {

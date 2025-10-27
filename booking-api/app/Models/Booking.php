@@ -1,9 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Service;
+
 
 class Booking extends Model
 {
@@ -23,4 +28,14 @@ class Booking extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
+    }
 }
