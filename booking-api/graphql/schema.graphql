@@ -32,11 +32,6 @@ type Booking {
     status: String!
 }
 
-type AuthPayload {
-    user: User!
-    token: String!
-}
-
 # -------------------------------------------------------------
 # QUERIES
 # -------------------------------------------------------------
@@ -63,8 +58,6 @@ type Query {
 # -------------------------------------------------------------
 
 type Mutation {
-    token(email: String!, password: String!): AuthPayload
-
     createService(
       name: String! @rules(apply: ["required", "string", "max:255"]),
       description: String

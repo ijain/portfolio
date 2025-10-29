@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -20,12 +20,14 @@ class ProductController extends Controller
         // Optional: enforce a maximum limit for safety
         $limit = min($limit, 100);
 
-        return Product::all()->paginate($limit);
+        return Product::select([ 'name', 'description', 'price', 'stock'])->paginate($limit);
     }
 
     // Show a single product
     public function show(Product $product): Product
     {
+        $product->setHidden(['updated_at', 'created_at']);
+
         return $product;
     }
 
@@ -40,7 +42,10 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        return Product::create($validated);
+        $product = Product::create($validated);
+        $product->setHidden(['updated_at', 'created_at']);
+
+        return $product;
     }
 
     // Update an existing product
@@ -55,23 +60,18 @@ class ProductController extends Controller
         ]);
 
         $product->update($validated);
+        $product->setHidden(['updated_at', 'created_at']);
 
         return $product;
     }
 
-    // Delete a product (returns 204 No Content)
-    public function destroy(Product $product): Response
+    // Delete a product
+    public function destroy(Product $product): JsonResponse
     {
-        $product->delete();
+         if ($product->delete()) {
+            return response()->json(['message' => 'Product deleted successfully.'], 200);
+        }
 
-        return response()->noContent();
+        return response()->json(['message' => 'Failed to delete product.'], 400);
     }
-
-    // Alias for destroy
-    /*public function delete(Product $product): Response
-    {
-        $product->delete();
-
-        return response()->noContent();
-    }*/
 }

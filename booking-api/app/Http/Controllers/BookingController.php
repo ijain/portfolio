@@ -76,7 +76,7 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking): JsonResponse
     {
-         if ($booking->delete()) {
+        if ($booking->delete()) {
             return response()->json(['message' => 'Booking deleted successfully.'], 200);
         }
 
