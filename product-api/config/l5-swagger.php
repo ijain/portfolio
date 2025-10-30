@@ -13,7 +13,7 @@ return [
             'paths' => [
                 'use_absolute_path' => true,
                 'annotations' => [],          // empty to disable scanning
-                'docs' => base_path('docs'),  // folder containing your YAML
+                'docs' => base_path('docs/swagger-ui'),  // folder containing your YAML
                 'docs_yaml' => 'product-api-rest.yaml',
                 'format_to_use_for_docs' => 'yaml',
             ],
