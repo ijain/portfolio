@@ -80,14 +80,14 @@ type Mutation {
       service_id: ID! @rules(apply: ["required", "exists:services,id"]),
       start_time: DateTime! @rules(apply: ["required"]),
       end_time: DateTime! @rules(apply: ["required", "after:start_time"]),
-      status: String @rules(apply: ["in:pending,confirmed,completed,cancelled"])
+      status: String @rules(apply: ["in:pending,confirmed,cancelled"])
     ): Booking @create(model: "App\\Models\\Booking")
 
     updateBooking(
       id: ID! @eq,
       start_time: DateTime,
       end_time: DateTime,
-      status: String @rules(apply: ["in:pending,confirmed,completed,cancelled"])
+      status: String @rules(apply: ["in:pending,confirmed,cancelled"])
     ): Booking @update(model: "App\\Models\\Booking")
 
     deleteBooking(id: ID! @eq): Booking @delete(model: "App\\Models\\Booking")

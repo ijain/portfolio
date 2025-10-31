@@ -55,7 +55,7 @@ components:
           example: "2025-10-25T11:00:00Z"
         status:
           type: string
-          enum: [pending, confirmed, completed, cancelled]
+          enum: [pending, confirmed, cancelled]
           example: "pending"
         created_at:
           type: string
@@ -293,7 +293,7 @@ paths:
                   example: "2025-10-25T11:00:00Z"
                 status:
                   type: string
-                  enum: [pending, confirmed, completed, cancelled]
+                  enum: [pending, confirmed, cancelled]
                   example: pending
       responses:
         '201':
@@ -353,7 +353,7 @@ paths:
                   example: "2025-10-25T13:00:00Z"
                 status:
                   type: string
-                  enum: [pending, confirmed, completed, cancelled]
+                  enum: [pending, confirmed, cancelled]
                   example: confirmed
       responses:
         '200':
