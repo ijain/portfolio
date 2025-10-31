@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 14 — Responsive Gallery with Captions</title>
+
+  <script>
+    const authToken = localStorage.getItem('auth_token');
+    if (!authToken) {
+        window.location.replace('/login.html');
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+     <header>
+        <h2>Products</h2>
+        <button id="logout-btn">Logout</button>
+    </header>
+
+    <main class="gallery">
+        <figure>
+            <img src="assests/images/product-placeholder-1.jpg" alt="Photo 1">
+            <figcaption>City in the morning light</figcaption>
+        </figure>
+        
+        <figure>
+            <img src="assests/images/product-placeholder-2.jpg" alt="Photo 2">
+            <figcaption>Seaside landscape</figcaption>
+        </figure>
+        
+        <figure>
+            <img src="assests/images/product-placeholder-3.jpg" alt="Photo 3">
+            <figcaption>Mountain valley</figcaption>
+        </figure>
+        
+        <figure>
+            <img src="assests/images/product-placeholder-4.jpg" alt="Photo 4">
+            <figcaption>Old streets</figcaption>
+        </figure>
+        
+        <figure>
+            <img src="assests/images/product-placeholder-5.jpg" alt="Photo 5">
+            <figcaption>Sunset in the mountains</figcaption>
+        </figure>
+        
+        <figure>
+            <img src="assests/images/product-placeholder-6.jpg" alt="Photo 6">
+            <figcaption>Blooming garden</figcaption>
+        </figure>
+    </main>
+
+    <div id="products-grid" class="grid">
+        <p>Loading products...</p>
+    </div>
+
+    <footer>
+        <small>© 2025 Irina Sharga. Demo project, all media used for illustration only.</small>
+    </footer>
+
+    <script src="js/pages/index.js"></script>
+</body>
+</html>
