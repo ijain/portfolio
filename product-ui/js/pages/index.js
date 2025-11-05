@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('logout-btn').addEventListener('click', logout);
 
   try {
-    const res = await fetch('http://127.0.0.1:8000/api/v1/products', {
+    const res = await fetch('http://localhost:8000/api/v1/products', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
