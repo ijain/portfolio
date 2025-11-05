@@ -1,0 +1,39 @@
+:root {
+    --color-primary: #a26de2;
+    --color-primary-hover: #b288eb;
+    --color-primary-active: #8f56d0;
+    --color-primary-text: #fff;
+
+    --color-bg: #e3d8f7;
+    --color-text: #1e1e1e;
+    --color-text-secondary: #5a5a5a;
+
+    --color-border: #e3d8f7;
+    --color-row-alt: #f7f3fc;
+}
+
+body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 40px;
+}
+
+button {
+  background-color: #8f56d0;
+  color: var(--color-primary-text);
+  border: none;
+  padding: 0.6em 1.2em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+button.active {
+  background-color: var(--color-primary-active);
+}

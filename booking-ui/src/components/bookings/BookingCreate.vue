@@ -89,8 +89,3 @@ export default {
 };
 </script>
 
-<style scoped>
-input, select {
-  width: 100%;
-}
-</style>

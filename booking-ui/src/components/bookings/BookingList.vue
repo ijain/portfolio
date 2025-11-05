@@ -1,40 +1,39 @@
 <template>
-  <div>
-    <h1>Bookings</h1>
-    <button @click="$router.push('/bookings/create')" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded">
-      Create Booking
-    </button>
-    <div v-if="loading">Loading bookings...</div>
-    <div v-else>
-      <table class="table-auto border-collapse border border-gray-300 w-full">
-        <thead>
-          <tr>
-            <th class="border border-gray-300 px-2 py-1">ID</th>
-            <th class="border border-gray-300 px-2 py-1">Service</th>
-            <th class="border border-gray-300 px-2 py-1">User</th>
-            <th class="border border-gray-300 px-2 py-1">Start Time</th>
-            <th class="border border-gray-300 px-2 py-1">End Time</th>
-            <th class="border border-gray-300 px-2 py-1">Status</th>
-            <th class="border border-gray-300 px-2 py-1">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="booking in bookings" :key="booking.id">
-            <td class="border border-gray-300 px-2 py-1">{{ booking.id }}</td>
-            <td class="border border-gray-300 px-2 py-1">{{ booking.service.name }}</td>
-            <td class="border border-gray-300 px-2 py-1">{{ booking.user.name }}</td>
-            <td class="border border-gray-300 px-2 py-1">{{ booking.start_time }}</td>
-            <td class="border border-gray-300 px-2 py-1">{{ booking.end_time }}</td>
-            <td class="border border-gray-300 px-2 py-1">{{ booking.status }}</td>
-            <td class="border border-gray-300 px-2 py-1 space-x-2">
-              <button @click="editBooking(booking.id)" class="px-2 py-1 bg-yellow-400 text-white rounded">Edit</button>
-              <button @click="deleteBookingHandler(booking.id)" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- Top section -->
+  <div class="top-row">
+    <h2>Bookings Table</h2>
+    <button @click="addBooking">+ Add Booking</button>
   </div>
+
+  <div v-if="loading">Loading bookings...</div>
+  <div v-else class="grid-table">
+
+     <div class="headers">
+        <div>ID</div>
+        <div>Service</div>
+        <div>User</div>
+        <div>Start Time</div>
+        <div>End Time</div>
+        <div>Status</div>
+        <div>Actions</div>
+      </div>
+
+    <template v-for="booking in bookings" :key="booking.id">
+       <div class="rows">
+          <div>{{ booking.id }}</div>
+          <div>{{ booking.service.name }}</div>
+          <div>{{ booking.user.name }}</div>
+          <div>{{ new Date(booking.start_time).toLocaleString() }}</div>
+          <div>{{ new Date(booking.end_time).toLocaleString() }}</div>
+          <div>{{ booking.status }}</div>
+          <div>
+            <button @click="editBooking(booking.id)" class="px-2 py-1 bg-yellow-400 text-white rounded">Edit</button>
+            <button @click="deleteBookingHandler(booking.id)" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+          </div>
+        </div>
+        </template>
+  </div>
+
 </template>
 
 <script>
@@ -88,6 +87,9 @@ export default {
         alert('Failed to delete booking')
       }
     },
+    addBooking() {
+      this.$router.push('/bookings/create')
+    }
   },
   mounted() {
     this.fetchBookings()
@@ -95,16 +97,3 @@ export default {
 }
 </script>
 
-<style scoped>
-table {
-  border-spacing: 0;
-  border: 1px solid #ccc;
-}
-th, td {
-  padding: 8px;
-  text-align: left;
-}
-button {
-  cursor: pointer;
-}
-</style>

@@ -18,18 +18,21 @@
         }
     </script>
 
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
-    <h2>Please Login</h2>
+    <div class="login-container">
+        <form class="login-form">
+            <h2>Please Login</h2>
 
-    <form id="login-form">
-        <input id="email" type="email" placeholder="Email" required />
-        <input id="password" type="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-    </form>
+            <input id="email" type="email" placeholder="Email" required />
+            <input id="password" type="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+        </form>
 
-    <div id="login-message"></div>
+        <div id="login-message"></div>
+    </div>
 
     <script src="js/pages/login.js"></script>
 </body>

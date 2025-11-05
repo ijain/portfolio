@@ -24,14 +24,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderProducts(products) {
-  const grid = document.getElementById('products-grid');
-  grid.innerHTML = products.map(p => `
-    <div class="product-card">
-      <h3>${p.name}</h3>
-      <p>${p.description ?? ''}</p>
-      <p><strong>$${p.price}</strong> • ${p.stock} in stock</p>
-    </div>
-  `).join('');
+  const gallery = document.getElementById('products-grid');
+  gallery.innerHTML = `
+    <main class="gallery">
+      ${products.map(p => `
+        <figure>
+          <img src="${p.image ? `uploads/images/${p.image}` : 'assets/images/product-no-image.svg'}" alt="${p.image}">
+          <figcaption>${p.name}</figcaption>
+        </figure>
+      `).join('')}
+    </main>
+  `;
 }
 
 function logout() {
