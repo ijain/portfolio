@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\TokenController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use App\Http\Controllers\Auth\UserController;
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('products', ProductController::class);
+    Route::post('/products/{product}/upload', [ImageController::class, 'upload']);
     Route::get('/user', [UserController::class, 'current']); // current user
 });
 

@@ -216,3 +216,48 @@ paths:
           description: Product deleted
         '404':
           description: Product not found
+  /v1/products/{id}/upload:
+    post:
+      summary: Upload product image
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the product
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The image file to upload
+      responses:
+        '200':
+          description: Image uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                    example: 7
+                  image:
+                    type: string
+                    example: "f1d9a8b3-7d0c-4d0f-90a3.jpg"
+        '422':
+          description: Validation error
+        '404':
+          description: Product not found

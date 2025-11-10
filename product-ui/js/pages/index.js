@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('logout-btn').addEventListener('click', logout);
 
   try {
-    const res = await fetch('http://localhost:8000/api/v1/products', {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -25,11 +25,44 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderProducts(products) {
   const gallery = document.getElementById('products-grid');
+  gallery.innerHTML = '<main class="gallery"></main>'; // placeholder container
+  const container = gallery.querySelector('main');
+
+  products.forEach(p => {
+    const img = new Image();
+    const img_url = p.image ? `${API_BASE_URL}/storage/products/${p.image}` : 'assets/images/product-no-image.svg';
+
+    img.onload = () => {
+      container.innerHTML += `
+        <figure>
+          <img src="${img_url}" alt="${p.name}">
+          <figcaption>${p.name}</figcaption>
+        </figure>
+      `;
+    };
+
+    img.onerror = () => {
+      const fallback_url = 'assets/images/product-no-image.svg';
+      container.innerHTML += `
+        <figure>
+          <img src="${fallback_url}" alt="${p.name}">
+          <figcaption>${p.name}</figcaption>
+        </figure>
+      `;
+    };
+
+    img.src = img_url; // triggers load/error check
+  });
+}
+
+
+function renderProducts1(products) {
+  const gallery = document.getElementById('products-grid');
   gallery.innerHTML = `
     <main class="gallery">
       ${products.map(p => `
         <figure>
-          <img src="${p.image ? `uploads/images/${p.image}` : 'assets/images/product-no-image.svg'}" alt="${p.image}">
+          <img src="${p.image ? `${API_BASE_URL}/storage/products/${p.image}` : 'assets/images/product-no-image.svg'}" alt="${p.name}">
           <figcaption>${p.name}</figcaption>
         </figure>
       `).join('')}

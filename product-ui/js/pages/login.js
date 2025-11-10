@@ -14,7 +14,7 @@ async function handleLogin(e) {
   msg.style.color = '#555';
 
   try {
-    const res = await fetch('http://localhost:8000/api/v1/token', {
+    const res = await fetch(`${API_BASE_URL}/api/v1/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
