@@ -14,15 +14,20 @@
   </script>
 
   <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/nav.css" />
   <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/pagination.css" />
   <link rel="stylesheet" href="css/gallery.css" />
 </head>
 <body>
-    <header>
-        <h2>Products</h2>
-        <button id="add-btn">Add Product</button>
-        <button id="logout-btn">Logout</button>
+    <header class="top-nav">
+        <nav>
+            <ul>
+            <li><button class="nav-btn active" onclick="window.location.href='index.html'">Products</button></li>
+            <li><button class="nav-btn" id="add-btn">Add Product</button></li>
+            <li><button class="nav-btn" id="logout-btn">Logout</button></li>
+            </ul>
+        </nav>
     </header>
 
     <div id="products-grid">
