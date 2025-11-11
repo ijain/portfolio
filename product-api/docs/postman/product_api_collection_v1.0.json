@@ -177,7 +177,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/v1/products/2",
+					"raw": "http://localhost:8000/api/v1/products/5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -187,12 +187,101 @@
 						"api",
 						"v1",
 						"products",
-						"2"
+						"5"
 					]
 				},
 				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Update product response",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Chocolate Cake 2\",\n  \"description\": \"Delicious dark chocolate cake\",\n  \"price\": \"13.99\",\n  \"image\": \"cake.jpg\",\n  \"stock\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/products/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"5"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 09 Nov 2025 23:07:35 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 09 Nov 2025 23:07:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.1.2-1ubuntu2.22"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "58"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 5,\n    \"name\": \"Chocolate Cake 2\",\n    \"description\": \"Delicious dark chocolate cake\",\n    \"price\": \"13.99\",\n    \"image\": \"cake.jpg\",\n    \"stock\": 2\n}"
+				}
+			]
 		},
 		{
 			"name": "Get product",
@@ -231,7 +320,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/v1/products/2",
+					"raw": "http://localhost:8000/api/v1/products/5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -241,7 +330,7 @@
 						"api",
 						"v1",
 						"products",
-						"2"
+						"5"
 					]
 				},
 				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -303,6 +392,60 @@
 			"response": []
 		},
 		{
+			"name": "Image upload",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/home/hp/Music/profile.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/products/5/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"5",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get token",
 			"request": {
 				"method": "POST",
@@ -317,10 +460,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/v1/token",
+					"raw": "http://127.0.0.1:8000/api/v1/token",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
 					"port": "8000",
 					"path": [

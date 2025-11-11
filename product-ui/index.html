@@ -14,11 +14,14 @@
   </script>
 
   <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/pagination.css" />
   <link rel="stylesheet" href="css/gallery.css" />
 </head>
 <body>
     <header>
         <h2>Products</h2>
+        <button id="add-btn">Add Product</button>
         <button id="logout-btn">Logout</button>
     </header>
 
@@ -26,11 +29,14 @@
         <p>Loading products...</p>
     </div>
 
+    <div id="product-modal"></div>
+
     <footer>
         <small>© 2025 Irina Sharga. Demo project, all media used for illustration only.</small>
     </footer>
 
     <script src="js/config.js"></script>
+    <script src="js/pages/modal.js"></script>
     <script src="js/pages/index.js"></script>
 </body>
 </html>
