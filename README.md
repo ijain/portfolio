@@ -10,14 +10,10 @@ License: MIT License (copy of original included)
 2) create booking-bot and product-bot
 
 todo Product-ui and api
-1) complete top menu layout after login
 2) add success/error colors
-3) create links in products gallery or BETTER buttons Add, Edit/Delete in figure
+3) Add Delete in figure
 4) create Add/Edit form (modal or page)
 5) create form validation
-6) Add image upload to API
-7) Add image upload field to UI
-8) Add image names to product seeder
 
 todo Booking-ui
 1) define colors palette

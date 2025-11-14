@@ -21,6 +21,7 @@ class BookingController extends Controller
 
         $booking = Booking::with(['service:id,name', 'user:id,name'])
             ->select('id', 'service_id', 'user_id', 'start_time', 'end_time', 'status')
+            ->orderBy('created_at', 'desc')
             ->paginate($limit);
 
         $booking->setHidden(['service_id', 'user_id']);

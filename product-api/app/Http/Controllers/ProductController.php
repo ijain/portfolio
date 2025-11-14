@@ -20,7 +20,9 @@ class ProductController extends Controller
         // Optional: enforce a maximum limit for safety
         $limit = min($limit, 100);
 
-        return Product::select([ 'id', 'name', 'description', 'price', 'stock', 'image'])->paginate($limit);
+        return Product::select([ 'id', 'name', 'description', 'price', 'stock', 'image'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
     }
 
     // Show a single product

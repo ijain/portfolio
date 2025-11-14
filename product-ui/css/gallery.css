@@ -17,6 +17,7 @@ figure {
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 180px;
 }
 
 figure:hover {
@@ -33,20 +34,31 @@ figure img {
 
 figcaption {
   padding: 12px;
-  text-align: center;
   font-size: 0.95rem;
   color: #555;
-   display: flex;
-  flex-direction: column; /* stack text vertically */
-  gap: 4px; /* spacing between lines */
-  position: relative; /* for absolutely positioned button */
-  min-height: 80px
+  display: flex;
+  flex-direction: column; /* stack text row and buttons vertically */
+  justify-content: space-between; /* push buttons to bottom */
+  min-height: 80px;
+  position: relative;
 }
 
-figcaption .edit-btn {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
+figcaption .text-row {
+  display: flex;
+  justify-content: space-between; /* spread info across row */
+  gap: 10px; /* space between text pieces */
+  text-align: left;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+figcaption .buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px; /* space between buttons */
+}
+
+figcaption .buttons button {
   background-color: var(--color-primary);
   color: var(--color-primary-text);
   border: none;
@@ -57,10 +69,10 @@ figcaption .edit-btn {
   transition: background-color 0.2s ease;
 }
 
-figcaption .edit-btn:hover {
+figcaption .buttons button:hover {
   background-color: var(--color-primary-hover);
 }
 
-figcaption .edit-btn:active {
+figcaption .buttons button:active {
   background-color: var(--color-primary-active);
 }

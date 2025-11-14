@@ -20,7 +20,9 @@ class ServiceController extends Controller
         // Optional: enforce a maximum limit for safety
         $limit = min($limit, 100);
 
-        return Service::select('id', 'name', 'description')->paginate($limit);
+        return Service::select('id', 'name', 'description')
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
     }
 
     // Store a new service

@@ -3,6 +3,14 @@
   padding: 0.8em 2em;
   border-radius: 16px;
   margin-bottom: 30px;
+
+  display: flex;
+  justify-content: space-between; /* stretch items across full width */
+  align-items: center;
+
+  min-width: 300px;  /* or whatever the minimum width your buttons need */
+  width: 100%;       /* stretch full width on normal screens */
+  box-sizing: border-box;
 }
 
 .top-nav ul {

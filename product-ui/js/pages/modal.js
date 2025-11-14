@@ -4,23 +4,55 @@ window.openProductModal = function(product, onClose) {
 
   modal.classList.add('show');
   modal.innerHTML = `
-    <div>
-      <h3>${product ? 'Edit Product' : 'Add Product'}</h3>
-      <form id="modal-form">
-        <label>Name: <input type="text" id="modal-name" value="${product ? product.name : ''}" required></label><br>
-        <label>Description: <input type="text" id="modal-description" value="${product ? product.description || '' : ''}"></label><br>
-        <label>Price: <input type="number" id="modal-price" step="0.01" value="${product ? product.price : ''}" required></label><br>
-        <label>In stock: <input type="number" id="modal-stock" value="${product ? product.stock : 0}" min="0" required></label><br>
-        <label>Image: <input type="file" id="modal-image"></label><br>
-        <button type="submit">${product ? 'Save' : 'Add'}</button>
-        <button type="button" id="modal-close">Cancel</button>
-      </form>
-    </div>
-  `;
+  <div>
+    <h3>${product ? 'Edit Product' : 'Add Product'}</h3>
+    <form id="modal-form">
+      <label>Name: <input type="text" id="modal-name" value="${product ? product.name : ''}" required></label><br>
+      <label>Description: <input type="text" id="modal-description" value="${product ? product.description || '' : ''}"></label><br>
+      <label>Price: <input type="number" id="modal-price" step="0.01" value="${product ? product.price : ''}" required></label><br>
+      <label>In stock: <input type="number" id="modal-stock" value="${product ? product.stock : 0}" min="0" required></label><br>
+      <label class="file-label">
+        <input type="file" id="modal-image">
+        <span class="file-btn">Choose File</span>
+        <span id="file-name">${product && product.image ? product.image : 'No file selected'}</span>
+      </label><br>
+      <button type="submit">${product ? 'Save' : 'Add'}</button>
+      <button type="button" id="modal-close">Cancel</button>
+    </form>
+  </div>
+`;
 
   // Close modal
   const closeBtn = document.getElementById('modal-close');
   closeBtn.addEventListener('click', () => modal.classList.remove('show'));
+
+  const fileInput = document.getElementById('modal-image');
+  const fileNameSpan = document.getElementById('file-name');
+
+  // Truncate filename utility
+  function truncateFilename(name, maxLength = 20) {
+  if (!name) return '';
+  const dotIndex = name.lastIndexOf('.');
+  if (dotIndex === -1 || name.length <= maxLength) return name;
+
+  const ext = name.slice(dotIndex);
+  const base = name.slice(0, dotIndex);
+
+  if (base.length > maxLength - ext.length - 3) {
+    return base.slice(0, maxLength - ext.length - 3) + '...' + ext;
+  } else {
+    return base + ext;
+  }
+}
+
+  // Initial filename for Edit
+  fileNameSpan.textContent = truncateFilename(fileNameSpan.textContent);
+
+  // Update on file selection
+  fileInput.addEventListener('change', () => {
+    const fullName = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+    fileNameSpan.textContent = truncateFilename(fullName);
+  });
 
   // Form submit
   const form = document.getElementById('modal-form');
@@ -31,7 +63,8 @@ window.openProductModal = function(product, onClose) {
     const description = document.getElementById('modal-description').value;
     const price = parseFloat(document.getElementById('modal-price').value);
     const stock = parseInt(document.getElementById('modal-stock').value);
-    const imageFile = document.getElementById('modal-image').files[0];
+    //const imageFile = document.getElementById('modal-image').files[0];
+    const imageFile = fileInput.files[0];
 
     const token = localStorage.getItem('auth_token');
     let productId = product ? product.id : null;
