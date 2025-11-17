@@ -10,18 +10,28 @@
 
     --color-border: #e3d8f7;
     --color-row-alt: #f7f3fc;
+
+    --color-footer-bg: #c4b4db;
+    --color-footer-text: #4b3b63;
 }
 
-body {
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-family: "Segoe UI", sans-serif;
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Segoe UI", sans-serif;
+     min-height: 100vh;
+}
+
 button {
-    background-color: #8f56d0;
+    background: #8f56d0;
     color: var(--color-primary-text);
     border: none;
     padding: 0.6em 1.2em;
@@ -31,9 +41,13 @@ button {
 }
 
 button:hover {
-    background-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
 }
 
 button.active {
-    background-color: var(--color-primary-active);
+    background: var(--color-primary-active);
+}
+
+#products-grid {
+    flex: 1;
 }

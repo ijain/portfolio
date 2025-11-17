@@ -1,17 +1,13 @@
 .login-container {
     display: grid;
     place-items: center;
-    /* centers both horizontally and vertically */
     height: 100vh;
-    /* full viewport height */
-    background-color: var(--violet-light);
+    background: var(--violet-light);
 }
 
-/* Optional: style the form */
 .login-form {
     display: grid;
     gap: 1rem;
-    /* space between inputs/buttons */
     padding: 2rem;
     background-color: white;
     border-radius: 8px;
@@ -27,11 +23,9 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Input focus state */
 .login-form input:focus {
     outline: none;
     border-color: #a26de2;
-    /* use your --color-primary */
     box-shadow: 0 0 0 3px rgba(162, 109, 226, 0.2);
 }
 

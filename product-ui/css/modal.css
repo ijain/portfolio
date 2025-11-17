@@ -1,38 +1,28 @@
-/* Modal overlay */
 #product-modal {
     display: none;
-    /* Hidden by default */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(30, 30, 30, 0.5);
-    /* semi-transparent overlay */
     z-index: 9999;
-    /* same as your previous inline z-index */
     justify-content: center;
     align-items: center;
     overflow: auto;
 }
 
-/* Modal form container */
 #product-modal>div {
     background: #fff;
-    /* form white */
     padding: 20px;
     border-radius: 12px;
-    /* same as before */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    /* same as before */
     min-width: 300px;
     max-width: 90%;
     position: relative;
     color: var(--color-text);
-    /* text color from your palette */
 }
 
-/* Modal form inputs */
 #product-modal input[type="text"],
 #product-modal input[type="number"],
 #product-modal input[type="file"] {
@@ -46,7 +36,6 @@
     color: var(--color-text);
 }
 
-/* Buttons inside modal */
 #product-modal button {
     margin-right: 8px;
     padding: 8px 16px;
@@ -55,16 +44,15 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
     color: var(--color-primary-text);
-    background-color: var(--color-primary);
+    background: var(--color-primary);
 }
 
 #product-modal button:hover {
-    background-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
 }
 
 #product-modal button#modal-close {
-    background-color: #e06c75;
-    /* cancel button red */
+    background: #e06c75;
     color: #fff;
 }
 
@@ -72,7 +60,6 @@
     background-color: #c94c5c;
 }
 
-/* Optional fade-in */
 #product-modal.show {
     display: flex;
     animation: fadeIn 0.25s ease;

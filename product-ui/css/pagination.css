@@ -1,13 +1,13 @@
-/* Pagination container */
 .pagination {
     margin-top: 20px;
+    margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
+    min-height: 30px;
 }
 
-/* Pagination buttons */
 .pagination .page-btn {
     background-color: var(--color-primary);
     color: var(--color-primary-text);
@@ -30,13 +30,11 @@
     cursor: default;
 }
 
-/* Optional: disable pointer events for inactive buttons */
 .pagination .page-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-/* Responsive adjustments */
 @media (max-width: 480px) {
     .pagination {
         gap: 4px;

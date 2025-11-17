@@ -1,18 +1,12 @@
 .top-nav {
-    background-color: var(--color-primary);
+    background: var(--color-primary);
     padding: 0.8em 2em;
-    border-radius: 16px;
-    margin-bottom: 30px;
-
+    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
-    /* stretch items across full width */
     align-items: center;
-
     min-width: 300px;
-    /* or whatever the minimum width your buttons need */
     width: 100%;
-    /* stretch full width on normal screens */
     box-sizing: border-box;
 }
 
@@ -42,12 +36,12 @@
 }
 
 .top-nav button {
-    background-color: var(--color-primary-active);
+    background: var(--color-primary-active);
     padding: 0.5em 1em;
     border-radius: 6px;
     font-weight: 500;
 }
 
 .top-nav button:hover {
-    background-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
 }
