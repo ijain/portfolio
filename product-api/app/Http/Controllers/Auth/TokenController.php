@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class TokenController extends Controller
 {
@@ -52,8 +53,8 @@ class TokenController extends Controller
                 'message' => 'Invalid credentials'
             ], 401);
         }
-
-        $token = $user->createToken('DemoToken')->plainTextToken;
+        
+        $token = $user->createToken('DemoToken', [], now()->addHours(2))->plainTextToken;
 
         return response()->json([
             'user' => [

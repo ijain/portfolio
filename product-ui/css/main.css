@@ -21,19 +21,19 @@ body {
 }
 
 button {
-  background-color: #8f56d0;
-  color: var(--color-primary-text);
-  border: none;
-  padding: 0.6em 1.2em;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    background-color: #8f56d0;
+    color: var(--color-primary-text);
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 button:hover {
-  background-color: var(--color-primary-hover);
+    background-color: var(--color-primary-hover);
 }
 
 button.active {
-  background-color: var(--color-primary-active);
+    background-color: var(--color-primary-active);
 }

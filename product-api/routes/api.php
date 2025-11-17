@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\TokenController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ImageController;
+use App\Http\Middleware\CheckTokenExpiration;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,10 @@ use App\Http\Controllers\ImageController;
 |
 */
 
-Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', CheckTokenExpiration::class])->prefix('v1')->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::post('/products/{product}/upload', [ImageController::class, 'upload']);
-    Route::get('/user', [UserController::class, 'current']); // current user
+    //Route::get('/user', [UserController::class, 'current']); // current user
 });
 
 Route::get('/v1/test-token', [TokenController::class, 'generateTestToken']);
