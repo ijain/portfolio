@@ -1,1 +1,15 @@
-const API_BASE_URL = 'http://api.ijain.products.com';
+const ApiConfig = (function () {
+    const base_url = 'http://api.products.com';
+    const version = 'v1';
+    const url = base_url + '/api/' + version;
+
+    function getConfig() {
+        return {
+            getBaseUrl: () => base_url,
+            getVersion: () => version,
+            getUrl: () => url
+        };
+    }
+
+    return { getConfig };
+})();
