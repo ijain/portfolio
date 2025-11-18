@@ -73,7 +73,7 @@ window.openProductModal = function (product, onClose) {
         try {
             // 1️⃣ Create or Update product
             if (!productId) {
-                const res = await fetch(`${API_BASE_URL}/api/v1/products`, {
+                const res = await fetch(`${api.base_url}/api/v1/products`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ window.openProductModal = function (product, onClose) {
                 resultProduct = await res.json();
                 productId = resultProduct.id;
             } else {
-                const res = await fetch(`${API_BASE_URL}/api/v1/products/${productId}`, {
+                const res = await fetch(`${api.base_url}/api/v1/products/${productId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ window.openProductModal = function (product, onClose) {
                 const formData = new FormData();
                 formData.append('image', imageFile);
 
-                const res = await fetch(`${API_BASE_URL}/api/v1/products/${productId}/upload`, {
+                const res = await fetch(`${api.base_url}/api/v1/products/${productId}/upload`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` },
                     body: formData
