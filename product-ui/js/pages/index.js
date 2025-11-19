@@ -1,8 +1,4 @@
-let currentPage = 1;
-let lastPage = 1;
-let currentProducts = [];
-
-fetchAndRenderProducts(currentPage);
+fetchAndRenderProducts(document.querySelector('.page-btn.active'));
 
 document.getElementById('logout-btn').addEventListener('click', logout);
 
@@ -10,31 +6,13 @@ document.getElementById('add-btn').addEventListener('click', () => {
     openProductModal(null, () => fetchAndRenderProducts(1));
 });
 
-document.addEventListener('click', e => {
+document.addEventListener('click', async (e) => {
     const target = e.target;
 
     if (target.classList.contains('page-btn')) {
-        fetchAndRenderProducts(Number(target.dataset.page));
-        return;
-    }
-
-    if (target.classList.contains('edit-btn')) {
-        const product = currentProducts.find(p => p.id == target.dataset.id);
-
-        if (!product) {
-            return;
-        }
-
-        openProductModal(product, () => fetchAndRenderProducts(currentPage));
-        return;
-    }
-
-    if (target.classList.contains('delete-btn')) {
-        deleteProduct(target.dataset.id);
-        return;
+        await fetchAndRenderProducts(Number(target.dataset.page));
     }
 });
-
 
 async function fetchAndRenderProducts(page = 1) {
     const grid = document.getElementById('products-grid');
@@ -59,7 +37,7 @@ async function deleteProduct(id) {
 
     try {
         await api.delete(`/products/${id}`);
-        fetchAndRenderProducts(currentPage);
+        await fetchAndRenderProducts(document.querySelector('.page-btn.active'));
     } catch (err) {
         alert(`Delete error: ${err.message}`);
     }
@@ -67,21 +45,40 @@ async function deleteProduct(id) {
 
 function renderProducts(products) {
     const container = document.getElementById('products-grid');
-    container.textContent = '';
+    container.textContent = ''; // clear previous content
 
     const gallery = document.createElement('main');
     gallery.className = 'gallery';
     container.appendChild(gallery);
 
-    products.forEach(item => {
-        const image = item.image
-            ? `${api.base_url}/storage/products/${item.image}`
-            : 'assets/images/product-no-image.svg';
-        addFigure(item, image, gallery);
+    products.forEach(product => {
+        const image = product.image
+            ? `${api.base_url}/storage/products/${product.image}`
+            : `${api.base_url}/storage/assets/images/product-no-image.svg`;
+
+        const { figure, editButton, deleteButton, id } = createProductFigure(product, image);
+        gallery.appendChild(figure);
+        attachProductEvents({ editButton, deleteButton, id });
     });
 }
 
-function addFigure(product, image, container) {
+function attachProductEvents({ editButton, deleteButton, id }) {
+    editButton.addEventListener('click', async () => {
+        const productData = await api.get(`/products/${id}`);
+        if (productData) {
+            openProductModal(productData, () => {
+                const activePage = document.querySelector('.page-btn.active');
+                fetchAndRenderProducts(activePage);
+            });
+        }
+    });
+
+    deleteButton.addEventListener('click', () => {
+        deleteProduct(id);
+    });
+}
+
+function createProductFigure(product, image) {
     const { id, name, price, stock } = product;
 
     const figure = addElement('figure', '', '', id);
@@ -97,7 +94,8 @@ function addFigure(product, image, container) {
     buttonsDiv.append(editButton, deleteButton);
     figcaption.append(nameDiv, priceDiv, stockDiv, buttonsDiv);
     figure.append(img, figcaption);
-    container.appendChild(figure);
+
+    return { figure, editButton, deleteButton, id };
 }
 
 function addElement(name, className = '', text = '', id = null) {
@@ -146,8 +144,8 @@ function renderPagination(current, last) {
         const button = document.createElement('button');
 
         button.className = 'page-btn' + (i === current ? ' active' : '');
-        button.dataset.page = i;
-        button.textContent = i;
+        button.dataset.page = String(i);
+        button.textContent = String(i);
         pagination.appendChild(button);
     }
 
