@@ -6,20 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-    <script>
-        // Skip redirect if coming from logout
-        const urlParams = new URLSearchParams(window.location.search);
-        const fromLogout = urlParams.has('logout');
-
-        const authToken = localStorage.getItem('auth_token');
-
-        // Only redirect if token exists AND not coming from logout
-        if (authToken && !fromLogout) {
-            window.location.replace('/index.html');
-        }
-    </script>
-
+    <script src="js/auth-check.js"></script>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/login.css" />
 </head>
