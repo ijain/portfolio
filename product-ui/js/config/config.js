@@ -6,7 +6,6 @@ const ApiConfig = (function () {
     function getConfig() {
         return {
             getBaseUrl: () => base_url,
-            getVersion: () => version,
             getUrl: () => url
         };
     }
