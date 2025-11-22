@@ -88,7 +88,6 @@ const Api = (function () {
             if (!res.ok) {
                 if (res.status === 401) {
                     logout();
-                    return;
                 } else {
                     throw new Error(`HTTP ${res.status}`);
                 }
