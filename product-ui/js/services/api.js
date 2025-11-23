@@ -10,88 +10,149 @@ const Api = (function () {
             this.base_url = config.getBaseUrl();
         }
 
-        async get(path) {
-            const res = await fetch(this.#url(path), {
+        get(path) {
+            return fetch(this.#url(path), {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
                 }
-            });
-            this.#error_handler(res);
+            })
+                .then(res => res.json().then(data => ({ res, data })))
+                .then(({ res, data }) => {
+                    const onLoginPage = window.location.pathname.includes('login');
 
-            return await res.json();
+                    if (!res.ok) {
+                        if (res.status === 401 && !onLoginPage) {
+                            logout();
+                            return;
+                        } else {
+                            throw new Error(data.message || `HTTP ${res.status}`);
+                        }
+                    }
+
+                    return data;
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
 
-        async post(path, body, auth = false) {
+        post(path, body, auth = false) {
             const headers = { 'Content-Type': 'application/json' };
-            
+
             if (!auth) {
                 headers['Authorization'] = `Bearer ${localStorage.getItem('auth_token')}`;
             }
 
-            const res = await fetch(this.#url(path), {
+            return fetch(this.#url(path), {
                 method: 'POST',
                 headers,
                 body: JSON.stringify(body)
-            });
-            this.#error_handler(res);
+            })
+                .then(res => {
+                    return res.json().then(data => ({ res, data }));
+                })
+                .then(({ res, data }) => {
+                    const onLoginPage = window.location.pathname.includes('login');
 
-            return await res.json();
+                    if (!res.ok) {
+                        if (res.status === 401 && !onLoginPage) {
+                            logout();
+                            return;
+                        } else {
+                            throw new Error(data.message || `HTTP ${res.status}`);
+                        }
+                    }
+
+                    return data;
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
 
-        async put(path, body) {
-            const res = await fetch(this.#url(path), {
+        put(path, body) {
+            return fetch(this.#url(path), {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
-            });
-            this.#error_handler(res);
-
-            return await res.json();
+            })
+                .then(res => res.json().then(data => ({ res, data })))
+                .then(({ res, data }) => {
+                    const onLoginPage = window.location.pathname.includes('login');
+                    if (!res.ok) {
+                        if (res.status === 401 && !onLoginPage) {
+                            logout();
+                            return;
+                        } else {
+                            throw new Error(data.message || `HTTP ${res.status}`);
+                        }
+                    }
+                    return data;
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
 
-        async delete(path) {
-            const res = await fetch(this.#url(path), {
+        delete(path) {
+            return fetch(this.#url(path), {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
                 }
-            });
-            this.#error_handler(res);
-
-            return await res.json();
+            })
+                .then(res => res.json().then(data => ({ res, data })))
+                .then(({ res, data }) => {
+                    const onLoginPage = window.location.pathname.includes('login');
+                    if (!res.ok) {
+                        if (res.status === 401 && !onLoginPage) {
+                            logout();
+                            return;
+                        } else {
+                            throw new Error(data.message || `HTTP ${res.status}`);
+                        }
+                    }
+                    return data;
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
 
-        async upload(path, file) {
+        upload(path, file) {
             const formData = new FormData();
             formData.append('image', file);
 
-            const res = await fetch(this.#url(path), {
+            return fetch(this.#url(path), {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
                 },
                 body: formData
-            });
-            this.#error_handler(res);
-
-            return await res.json();
+            })
+                .then(res => res.json().then(data => ({ res, data })))
+                .then(({ res, data }) => {
+                    const onLoginPage = window.location.pathname.includes('login');
+                    if (!res.ok) {
+                        if (res.status === 401 && !onLoginPage) {
+                            logout();
+                            return;
+                        } else {
+                            throw new Error(data.message || `HTTP ${res.status}`);
+                        }
+                    }
+                    return data;
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
 
         #url(path) {
             return this.url + (path.startsWith('/') ? path : '/' + path);
-        }
-
-        #error_handler(res) {
-            if (!res.ok) {
-                if (res.status === 401) {
-                    logout();
-                } else {
-                    throw new Error(`HTTP ${res.status}`);
-                }
-            }
         }
     }
 

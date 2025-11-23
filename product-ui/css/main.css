@@ -51,3 +51,14 @@ button.active {
 #products-grid {
     flex: 1;
 }
+
+.error {
+    color: red;
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 3px;
+}
+
+input.invalid {
+    border-color: red;
+}

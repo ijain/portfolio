@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::create([
+        User::create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'email_verified_at' => now(),
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-         $user = User::create([
+         User::create([
             'name' => 'Demo User',
             'email' => 'demo@example.com',
             'email_verified_at' => now(),

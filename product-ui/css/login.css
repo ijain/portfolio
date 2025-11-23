@@ -2,7 +2,6 @@
     display: grid;
     place-items: center;
     height: 100vh;
-    background: var(--violet-light);
 }
 
 .login-form {
@@ -32,3 +31,20 @@
 .login-form input::placeholder {
     color: #aaa;
 }
+
+#login-message {
+    font-size: 0.95rem;
+    display: none;
+    transition: all 0.2s ease;
+}
+
+#login-message.error {
+    color: #b00020;
+    display: block;
+}
+
+#login-message.success {
+    color: #155724;
+    display: block;
+}
+

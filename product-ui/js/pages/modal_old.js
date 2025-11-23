@@ -87,7 +87,10 @@ window.openProductModal = function (product, onClose) {
                     return;
                 }
 
-                if (!res.ok) throw new Error(`Create product failed: ${res.status}`);
+                if (!res.ok) {
+                    throw new Error(`Create product failed: ${res.status}`);
+                }
+
                 resultProduct = await res.json();
                 productId = resultProduct.id;
             } else {
@@ -105,7 +108,10 @@ window.openProductModal = function (product, onClose) {
                     return;
                 }
 
-                if (!res.ok) throw new Error(`Update product failed: ${res.status}`);
+                if (!res.ok) {
+                    throw new Error(`Update product failed: ${res.status}`);
+                }
+
                 resultProduct = await res.json();
             }
 
@@ -119,7 +125,10 @@ window.openProductModal = function (product, onClose) {
                     headers: { 'Authorization': `Bearer ${token}` },
                     body: formData
                 });
-                if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
+                if (!res.ok) {
+                    throw new Error(`Upload failed: ${res.status}`);
+                }
+
                 const json = await res.json();
                 resultProduct.image = json.image;
             }
