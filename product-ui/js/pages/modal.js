@@ -10,21 +10,22 @@ class ProductModal {
     open(product = null, onClose = null) {
         this.product = product;
         this.onClose = onClose;
-
+        this.modal.textContent = '';
         this.modal.classList.add('show');
-        const wrapper = document.createElement('div');
 
+        const wrapper = document.createElement('div');
         const title = document.createElement('h3');
+
         title.textContent = product ? 'Edit Product' : 'Add Product';
         wrapper.appendChild(title);
 
         const form = document.createElement('form');
         form.id = 'modal-form';
 
-        this.nameInput = this.#createInput({ labelText: 'Name', id: 'modal-name', value: product ? product.name : '', required: true }, form);
+        this.nameInput = this.#createInput({ labelText: 'Name', id: 'modal-name', value: product ? product.name : '' }, form);
         this.descInput = this.#createInput({ labelText: 'Description', id: 'modal-description', value: product ? product.description || '' : '' }, form);
-        this.priceInput = this.#createInput({ labelText: 'Price', id: 'modal-price', type: 'number', value: product ? product.price : '', required: true, step: '0.01' }, form);
-        this.stockInput = this.#createInput({ labelText: 'In stock', id: 'modal-stock', type: 'number', value: product ? product.stock : 0, required: true, min: 0 }, form);
+        this.priceInput = this.#createInput({ labelText: 'Price', id: 'modal-price', type: 'number', value: product ? product.price : '' }, form);
+        this.stockInput = this.#createInput({ labelText: 'In stock', id: 'modal-stock', type: 'number', value: product ? product.stock : 0 }, form);
 
         const fileLabel = document.createElement('label');
         fileLabel.className = 'file-label';
@@ -44,8 +45,8 @@ class ProductModal {
         fileLabel.appendChild(this.fileInput);
         fileLabel.appendChild(fileBtn);
         fileLabel.appendChild(this.fileNameSpan);
-        form.appendChild(fileLabel);
 
+        form.appendChild(fileLabel);
         form.appendChild(document.createElement('br'));
 
         const submitBtn = document.createElement('button');
@@ -69,7 +70,7 @@ class ProductModal {
         this.#bindEvents();
     }
 
-    #createInput({ labelText, type = 'text', id, value = '', required = false, step, min }, form) {
+    #createInput({ labelText, type = 'text', id, value = '' }, form) {
         const label = document.createElement('label');
         label.textContent = labelText + ': ';
 
@@ -77,16 +78,6 @@ class ProductModal {
         input.type = type;
         input.id = id;
         input.value = value;
-
-        if (required) {
-            input.required = true;
-        }
-        if (step) {
-            input.step = step;
-        }
-        if (min !== undefined) {
-            input.min = min;
-        }
 
         label.appendChild(input);
         form.appendChild(label);
@@ -105,9 +96,11 @@ class ProductModal {
             this.fileNameSpan.textContent = this.#truncateFilename(fullName);
         });
 
-        this.form.addEventListener('submit', (e) => {
-            this.#handleSubmit(e);
-        });
+        this.nameInput.addEventListener('input', () => this.#validateName());
+        this.priceInput.addEventListener('input', () => this.#validatePrice());
+        this.stockInput.addEventListener('input', () => this.#validateStock());
+
+        this.form.addEventListener('submit', (e) => this.#handleSubmit(e));
     }
 
     #truncateFilename(name, maxLength = 20) {
@@ -131,8 +124,78 @@ class ProductModal {
         return base + ext;
     }
 
+    #showError(input, message) {
+        let error = input.nextElementSibling;
+
+        if (!error || !error.classList.contains('error')) {
+            error = document.createElement('span');
+            error.className = 'error';
+            input.after(error);
+        }
+
+        error.textContent = message;
+        input.classList.add('invalid');
+    }
+
+    #clearError(input) {
+        const error = input.nextElementSibling;
+
+        if (error && error.classList.contains('error')) {
+            error.textContent = '';
+        }
+
+        input.classList.remove('invalid');
+    }
+
+    #validateName() {
+        const value = this.nameInput.value.trim();
+
+        if (!value) {
+            this.#showError(this.nameInput, 'Name is required.');
+            return false;
+        }
+
+        this.#clearError(this.nameInput);
+
+        return true;
+    }
+
+    #validatePrice() {
+        const value = parseFloat(this.priceInput.value);
+
+        if (isNaN(value) || value <= 0) {
+            this.#showError(this.priceInput, 'Price must be a positive number.');
+            return false;
+        }
+
+        this.#clearError(this.priceInput);
+
+        return true;
+    }
+
+    #validateStock() {
+        const value = parseInt(this.stockInput.value);
+
+        if (isNaN(value) || value < 0) {
+            this.#showError(this.stockInput, 'Stock must be zero or more.');
+            return false;
+        }
+
+        this.#clearError(this.stockInput);
+
+        return true;
+    }
+
+    #validateAll() {
+        return this.#validateName() && this.#validatePrice() && this.#validateStock();
+    }
+
     async #handleSubmit(e) {
         e.preventDefault();
+
+        if (!this.#validateAll()) {
+            return;
+        }
 
         const name = this.nameInput.value;
         const description = this.descInput.value;
@@ -157,10 +220,10 @@ class ProductModal {
             }
 
             this.modal.classList.remove('show');
+
             if (typeof this.onClose === 'function') {
                 this.onClose();
             }
-
         } catch (err) {
             console.error('Modal error:', err);
         }
