@@ -56,9 +56,5 @@ button.active {
     color: red;
     font-size: 0.85rem;
     display: block;
-    margin-top: 3px;
-}
-
-input.invalid {
-    border-color: red;
+    margin-top: 1px;
 }

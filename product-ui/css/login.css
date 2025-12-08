@@ -48,3 +48,7 @@
     display: block;
 }
 
+.login-form input.invalid {
+    border-color: red;
+}
+
