@@ -27,8 +27,8 @@
           <div>{{ new Date(booking.end_time).toLocaleString() }}</div>
           <div>{{ booking.status }}</div>
           <div>
-            <button @click="editBooking(booking.id)" class="px-2 py-1 bg-yellow-400 text-white rounded">Edit</button>
-            <button @click="deleteBookingHandler(booking.id)" class="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+            <button @click="editBooking(booking.id)">Edit</button>
+            <button @click="deleteBookingHandler(booking.id)">Delete</button>
           </div>
         </div>
         </template>

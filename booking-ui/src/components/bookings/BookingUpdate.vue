@@ -5,24 +5,24 @@
     <form v-if="booking" @submit.prevent="updateBooking" class="space-y-4">
       <div>
         <label class="block mb-1">Service</label>
-        <select v-model="form.service_id" class="border rounded px-2 py-1 w-full">
+        <select v-model="form.service_id">
           <option v-for="s in services" :key="s.id" :value="s.id">{{ s.name }}</option>
         </select>
       </div>
 
       <div>
         <label class="block mb-1">Start Time</label>
-        <input type="datetime-local" v-model="form.start_time" class="border rounded px-2 py-1 w-full" />
+        <input type="datetime-local" v-model="form.start_time" />
       </div>
 
       <div>
         <label class="block mb-1">End Time</label>
-        <input type="datetime-local" v-model="form.end_time" class="border rounded px-2 py-1 w-full" />
+        <input type="datetime-local" v-model="form.end_time" />
       </div>
 
       <div>
         <label class="block mb-1">Status</label>
-        <select v-model="form.status" class="border rounded px-2 py-1 w-full">
+        <select v-model="form.status">
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
           <option value="cancelled">Cancelled</option>
@@ -31,7 +31,6 @@
 
       <button
         type="submit"
-        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         :disabled="loading"
       >
         {{ loading ? 'Updating...' : 'Update Booking' }}

@@ -5,7 +5,7 @@
     <form @submit.prevent="submitBooking" class="space-y-4">
       <div>
         <label class="block mb-1">Service</label>
-        <select v-model="form.service_id" class="border rounded px-2 py-1 w-full">
+        <select v-model="form.service_id">
           <option disabled value="">Select service</option>
           <option v-for="service in services" :key="service.id" :value="service.id">
             {{ service.name }}
@@ -15,17 +15,16 @@
 
       <div>
         <label class="block mb-1">Start Time</label>
-        <input type="datetime-local" v-model="form.start_time" class="border rounded px-2 py-1 w-full" />
+        <input type="datetime-local" v-model="form.start_time"  />
       </div>
 
       <div>
         <label class="block mb-1">End Time</label>
-        <input type="datetime-local" v-model="form.end_time" class="border rounded px-2 py-1 w-full" />
+        <input type="datetime-local" v-model="form.end_time" />
       </div>
 
       <button
         type="submit"
-        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
         :disabled="loading"
       >
         {{ loading ? 'Creating...' : 'Create Booking' }}

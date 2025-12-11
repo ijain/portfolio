@@ -5,15 +5,15 @@
     <form v-if="service" @submit.prevent="updateServiceHandler" class="space-y-4">
       <div>
         <label class="block mb-1">Name</label>
-        <input v-model="form.name" required class="border rounded px-2 py-1 w-full" />
+        <input v-model="form.name" required />
       </div>
 
       <div>
         <label class="block mb-1">Description</label>
-        <textarea v-model="form.description" class="border rounded px-2 py-1 w-full"></textarea>
+        <textarea v-model="form.description"></textarea>
       </div>
 
-      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded" :disabled="loading">
+      <button type="submit" :disabled="loading">
         {{ loading ? 'Updating...' : 'Update Service' }}
       </button>
     </form>
