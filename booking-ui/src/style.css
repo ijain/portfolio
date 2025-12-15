@@ -33,12 +33,12 @@ button {
 
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 3fr;
   grid-template-areas:
-        "header header"
-        "nav nav"
-        "main main"
-        "footer footer";
+        "header"
+        "nav"
+        "main"
+        "footer";
+  grid-template-columns: 1fr;
 }
 
 header {
@@ -49,6 +49,20 @@ header {
   display: flex;
   align-items: center;
   padding: 0 20px;
+  height: 50px;
+  justify-content: space-between;
+}
+
+header .title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+header .logo {
+  height: 40px;
+  width: auto;
+  padding-left: 5px;
 }
 
 nav {

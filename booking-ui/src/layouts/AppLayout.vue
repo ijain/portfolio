@@ -1,40 +1,39 @@
 <template>
   <div class="wrapper">
     <header>
-      <h3>Booking Anything</h3>
+      <div class="title">
+        <h3>Book Anything</h3>
+        <img src="/logo.png" class="logo" alt="Logo" />
+      </div>
+
+      <nav>
+        <RouterLink
+            to="/services"
+            :class="{ active: isActive('/services') }"
+        >
+          Services
+        </RouterLink>
+
+        <RouterLink
+            to="/bookings"
+            :class="{ active: isActive('/bookings') }"
+        >
+          Bookings
+        </RouterLink>
+
+        <button v-if="isLoggedIn" @click="logout">Logout</button>
+
+        <RouterLink v-else to="/login">Login</RouterLink>
+      </nav>
     </header>
-
-    <nav>
-      <RouterLink
-          to="/services"
-          :class="{ active: isActive('/services') }"
-      >
-        Services
-      </RouterLink>
-
-      <RouterLink
-          to="/bookings"
-          :class="{ active: isActive('/bookings') }"
-      >
-        Bookings
-      </RouterLink>
-
-      <button v-if="isLoggedIn" @click="logout">Logout</button>
-
-      <RouterLink v-else to="/login">Login</RouterLink>
-    </nav>
 
     <main>
       <RouterView />
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Praesent vitae orci nec lorem dictum facilisis.
-        Integer scelerisque nisl sit amet neque fermentum,
-        non pulvinar arcu consequat. Donec sed erat id urna varius blandit.
-        Mauris posuere gravida lorem, vel malesuada sapien ultricies nec.
-      </p>
     </main>
 
-    <footer>Lorem ipsum dolor sit amet, consectetur adipiscing elit</footer>
+    <footer>
+        <small>© 2025 Irina Sharga. Demo project, all media used for illustration only.</small>
+    </footer>
   </div>
   </template>
 
