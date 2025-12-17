@@ -1,59 +1,36 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-4">Services</h1>
-
-    <button
-      @click="$router.push('/services/create')"
-    >
-      + Add Service
-    </button>
-
-    <div v-if="loading">Loading services...</div>
-    <div v-if="error" class="text-red-500">{{ error }}</div>
-
-    <table
-      v-if="!loading && services.length"
-      class="table-auto border-collapse border border-gray-300 w-full"
-    >
-      <thead>
-        <tr class="bg-gray-100">
-          <th class="border border-gray-300 px-3 py-2 text-left">ID</th>
-          <th class="border border-gray-300 px-3 py-2 text-left">Name</th>
-          <th class="border border-gray-300 px-3 py-2 text-left">Description</th>
-          <th class="border border-gray-300 px-3 py-2 text-left">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="service in services" :key="service.id">
-          <td class="border border-gray-300 px-3 py-2">{{ service.id }}</td>
-          <td class="border border-gray-300 px-3 py-2">{{ service.name }}</td>
-          <td class="border border-gray-300 px-3 py-2">{{ service.description }}</td>
-          <td class="border border-gray-300 px-3 py-2 space-x-2">
-            <button
-              @click="editService(service.id)"
-              class="px-2 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
-            >
-              Edit
-            </button>
-            <button
-              @click="deleteServiceHandler(service.id)"
-              class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div v-if="!loading && !services.length" class="text-gray-500">No services found.</div>
+  <div class="top-row">
+    <h2>Services</h2>
+    <button @click="addService">Add Service</button>
   </div>
+
+  <div v-if="loading">Loading services...</div>
+  <div v-else class="grid-table">
+    <div class="headers">
+      <div>ID</div>
+      <div>Name</div>
+      <div>Description</div>
+      <div>Actions</div>
+    </div>
+    <template v-for="service in services" :key="service.id">
+      <div class="rows">
+        <div>{{ service.id }}</div>
+        <div>{{ service.name }}</div>
+        <div>{{ service.description }}</div>
+        <div>
+          <button @click="editService(service.id)">Edit</button>
+          <button @click="deleteServiceHandler(service.id)">Delete</button>
+        </div>
+      </div>
+  </template>
+ </div>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
 import useServices from '@/composables/useServices'
 import { useRouter } from 'vue-router'
+import '@/assets/styles/table.css'
 
 const router = useRouter()
 const { services, loading, error, fetchServices, deleteService } = useServices()
@@ -61,6 +38,7 @@ const { services, loading, error, fetchServices, deleteService } = useServices()
 onMounted(fetchServices)
 
 const editService = (id) => router.push(`/services/update/${id}`)
+const addService = () => router.push(`/services/create`)
 
 const deleteServiceHandler = async (id) => {
   if (confirm('Are you sure you want to delete this service?')) {

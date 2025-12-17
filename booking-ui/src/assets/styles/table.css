@@ -1,0 +1,36 @@
+.grid-table {
+    display: grid;
+    gap: 1px;
+    background-color: var(--body-background);
+    border-radius: 12px;
+    overflow: hidden;
+    color: var(--burgundy-light);
+    margin-top: 5px;
+}
+
+.grid-table button {
+    color: #3a0018;
+}
+
+.grid-table .headers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    padding: 10px;
+    font-weight: bold;
+    background-color: #b35c66;
+    color: #f0f0f0;
+    font-size: 15px;
+}
+
+.grid-table .rows {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    padding: 10px;
+    background-color: #f0f0f0;
+    font-size: 13px;
+}
+
+.grid-table .header > div {
+    font-weight: bold;
+    background-color: #ddd2d2;
+}

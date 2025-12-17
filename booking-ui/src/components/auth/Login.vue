@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
-    <h1>Login</h1>
-    <form @submit.prevent="handleLogin">
+    <form @submit.prevent="handleLogin" class="login-form">
+      <h2>Login</h2>
       <div>
         <label for="email">Email:</label>
         <input id="email" v-model="email" type="email" required />
@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { authAPI } from '@/api';
+import { ref } from 'vue'
+import { authAPI } from '@/helpers/api.js'
+import '@/assets/styles/login.css'
 
 export default {
   name: 'Login',

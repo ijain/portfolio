@@ -2,7 +2,7 @@
   <div class="wrapper">
     <header>
       <div class="title">
-        <h3>Book Anything</h3>
+        <h3>Booking Anything</h3>
         <img src="/logo.png" class="logo" alt="Logo" />
       </div>
 
