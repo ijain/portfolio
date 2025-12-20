@@ -51,5 +51,4 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-// ✅ Then export router (AFTER guard)
 export default router

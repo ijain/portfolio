@@ -1,7 +1,5 @@
 import { ref } from 'vue'
-import axios from 'axios'
-
-const API_URL = 'http://localhost:8000/api/v1/services'
+import { serviceAPI } from '@/helpers/api'
 
 export default function useServices() {
   const services = ref([])
@@ -12,12 +10,11 @@ export default function useServices() {
     loading.value = true
     error.value = null
     try {
-      const res = await axios.get(API_URL, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
+      const res = await serviceAPI.getAll()
       services.value = res.data.data
     } catch (err) {
       error.value = err.response?.data?.message || err.message
+      console.error(err)
     } finally {
       loading.value = false
     }
@@ -27,10 +24,8 @@ export default function useServices() {
     loading.value = true
     error.value = null
     try {
-      const res = await axios.get(`${API_URL}/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
-      return res.data
+      const res = await serviceAPI.get(id)
+      return res.data.data
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -43,9 +38,8 @@ export default function useServices() {
     loading.value = true
     error.value = null
     try {
-      await axios.post(API_URL, data, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
+      await serviceAPI.create(data)
+      await fetchServices()
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -58,9 +52,8 @@ export default function useServices() {
     loading.value = true
     error.value = null
     try {
-      await axios.put(`${API_URL}/${id}`, data, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
+      await serviceAPI.update(id, data)
+      await fetchServices()
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -73,10 +66,8 @@ export default function useServices() {
     loading.value = true
     error.value = null
     try {
-      await axios.delete(`${API_URL}/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
-      services.value = services.value.filter((s) => s.id !== id)
+      await serviceAPI.delete(id)
+      services.value = services.value.filter(s => s.id !== id)
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -85,5 +76,14 @@ export default function useServices() {
     }
   }
 
-  return { services, loading, error, fetchServices, getService, createService, updateService, deleteService }
+  return {
+    services,
+    loading,
+    error,
+    fetchServices,
+    getService,
+    createService,
+    updateService,
+    deleteService,
+  }
 }

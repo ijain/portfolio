@@ -32,65 +32,27 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios'
+<script setup>
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import useBookings from '@/composables/useBookings'
 import '@/assets/styles/table.css'
 
-export default {
-  name: 'BookingList',
-  data() {
-    return {
-      bookings: [],
-      loading: false,
-      error: null,
+const router = useRouter()
+const { bookings, loading, error, fetchBookings, deleteBooking } = useBookings()
+
+onMounted(fetchBookings)
+
+const addBooking = () => router.push('/bookings/create')
+const editBooking = (id) => router.push(`/bookings/update/${id}`)
+
+const deleteBookingHandler = async (id) => {
+  if (confirm('Are you sure you want to delete this booking?')) {
+    try {
+      await deleteBooking(id)
+    } catch {
+      alert('Failed to delete booking')
     }
-  },
-  methods: {
-    async fetchBookings() {
-      this.loading = true
-      this.error = null
-      try {
-        const token = localStorage.getItem('token')
-        const response = await axios.get('http://localhost:8000/api/v1/bookings', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        })
-        this.bookings = response.data.data
-      } catch (err) {
-        this.error = err.response?.data?.message || err.message
-        console.error(err)
-      } finally {
-        this.loading = false
-      }
-    },
-    editBooking(id) {
-      this.$router.push(`/bookings/update/${id}`)
-    },
-    async deleteBookingHandler(id) {
-      if (!confirm('Are you sure you want to delete this booking?')) return
-      try {
-        const token = localStorage.getItem('token')
-        await axios.delete(`http://localhost:8000/api/v1/bookings/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        })
-        this.fetchBookings()
-      } catch (err) {
-        console.error(err)
-        alert('Failed to delete booking')
-      }
-    },
-    addBooking() {
-      this.$router.push('/bookings/create')
-    }
-  },
-  mounted() {
-    this.fetchBookings()
-  },
+  }
 }
 </script>
-

@@ -1,33 +1,45 @@
 import { ref } from 'vue'
-import axios from 'axios'
-
-const API_URL = 'http://localhost:8000/api/v1/bookings'
+import { bookingAPI } from '@/helpers/api'
 
 export default function useBookings() {
   const bookings = ref([])
+  const loading = ref(false)
+  const error = ref(null)
 
   const fetchBookings = async () => {
-    const res = await axios.get(API_URL, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
-    bookings.value = res.data
-  }
-
-  const getBooking = async (id) => {
-    const res = await axios.get(`${API_URL}/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
-    return res.data
-  }
-
-  const createBooking = async (data) => {
-    await axios.post(API_URL, data, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
-  }
-
-  const updateBooking = async (id, data) => {
-    await axios.put(`${API_URL}/${id}`, data, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+    loading.value = true
+    error.value = null
+    try {
+      const res = await bookingAPI.getAll()
+      bookings.value = res.data.data
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
   }
 
   const deleteBooking = async (id) => {
-    await axios.delete(`${API_URL}/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
-    bookings.value = bookings.value.filter(b => b.id !== id)
+    if (!confirm('Are you sure you want to delete this booking?')) return
+    loading.value = true
+    error.value = null
+    try {
+      await bookingAPI.delete(id)
+      bookings.value = bookings.value.filter(b => b.id !== id)
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
   }
 
-  return { bookings, fetchBookings, getBooking, createBooking, updateBooking, deleteBooking }
+  return {
+    bookings,
+    loading,
+    error,
+    fetchBookings,
+    deleteBooking,
+  }
 }
