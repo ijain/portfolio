@@ -1,25 +1,19 @@
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-4">Update Service</h1>
-
-    <form v-if="service" @submit.prevent="updateServiceHandler" class="space-y-4">
+    <h2>Update Service</h2>
+    <form v-if="service" @submit.prevent="updateService" class="space-y-4">
       <div>
         <label class="block mb-1">Name</label>
         <input v-model="form.name" required />
       </div>
-
       <div>
         <label class="block mb-1">Description</label>
         <textarea v-model="form.description"></textarea>
       </div>
-
       <button type="submit" :disabled="loading">
         {{ loading ? 'Updating...' : 'Update Service' }}
       </button>
     </form>
-
-    <div v-else-if="loading">Loading service...</div>
-    <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
   </div>
 </template>
 

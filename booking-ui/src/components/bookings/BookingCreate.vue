@@ -1,8 +1,7 @@
 <template>
   <div>
     <h1>Create Booking</h1>
-
-    <form @submit.prevent="submitBooking" class="space-y-4">
+    <form @submit.prevent="submitBookingHandler" class="space-y-4">
       <div>
         <label class="block mb-1">Service</label>
         <select v-model="form.service_id">
@@ -12,79 +11,62 @@
           </option>
         </select>
       </div>
-
       <div>
         <label class="block mb-1">Start Time</label>
-        <input type="datetime-local" v-model="form.start_time"  />
+        <input type="datetime-local" v-model="form.start_time" />
       </div>
-
       <div>
         <label class="block mb-1">End Time</label>
         <input type="datetime-local" v-model="form.end_time" />
       </div>
-
-      <button
-        type="submit"
-        :disabled="loading"
-      >
+      <button type="submit" :disabled="loading">
         {{ loading ? 'Creating...' : 'Create Booking' }}
       </button>
     </form>
-
-    <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
   </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script setup>
+  import { ref, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+  import useBookings from '@/composables/useBookings'
+  import useServices from '@/composables/useServices'
 
-export default {
-  name: 'BookingCreate',
-  data() {
-    return {
-      services: [],
-      form: {
-        service_id: '',
-        start_time: '',
-        end_time: '',
-      },
-      loading: false,
-      error: null,
-    };
-  },
-  methods: {
-    async fetchServices() {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8000/api/v1/services', {
-          headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
-        });
-        this.services = res.data.data;
-      } catch (err) {
-        this.error = err.response?.data?.message || err.message;
-      }
-    },
-    async submitBooking() {
-      this.loading = true;
-      this.error = null;
-      try {
-        const token = localStorage.getItem('token');
-        await axios.post(
-          'http://localhost:8000/api/v1/bookings',
-          { ...this.form },
-          { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
-        );
-        this.$router.push('/bookings');
-      } catch (err) {
-        this.error = err.response?.data?.message || err.message;
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-  mounted() {
-    this.fetchServices();
-  },
-};
+  const router = useRouter()
+
+  const { createBooking, loading: bookingsLoading, error: bookingsError } = useBookings()
+  const { services, fetchServices, loading: servicesLoading, error: servicesError } = useServices()
+
+  const form = ref({
+    service_id: '',
+    start_time: '',
+    end_time: '',
+  })
+  const loading = ref(false)
+  const error = ref(null)
+
+  onMounted(async () => {
+    loading.value = true
+    error.value = null
+    try {
+      await fetchServices()
+    } catch (err) {
+      error.value = err.message || 'Failed to fetch services'
+    } finally {
+      loading.value = false
+    }
+  })
+
+  const submitBookingHandler = async () => {
+    loading.value = true
+    error.value = null
+    try {
+      await createBooking(form.value)
+      router.push('/bookings')
+    } catch (err) {
+      error.value = err.message || 'Failed to create booking'
+    } finally {
+      loading.value = false
+    }
+  }
 </script>
-

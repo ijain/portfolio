@@ -9,12 +9,12 @@ export default function useServices() {
   const fetchServices = async () => {
     loading.value = true
     error.value = null
+
     try {
       const res = await serviceAPI.getAll()
       services.value = res.data.data
     } catch (err) {
       error.value = err.response?.data?.message || err.message
-      console.error(err)
     } finally {
       loading.value = false
     }
@@ -23,9 +23,10 @@ export default function useServices() {
   const getService = async (id) => {
     loading.value = true
     error.value = null
+
     try {
       const res = await serviceAPI.get(id)
-      return res.data.data
+      return res.data
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -37,6 +38,7 @@ export default function useServices() {
   const createService = async (data) => {
     loading.value = true
     error.value = null
+
     try {
       await serviceAPI.create(data)
       await fetchServices()
@@ -51,6 +53,7 @@ export default function useServices() {
   const updateService = async (id, data) => {
     loading.value = true
     error.value = null
+
     try {
       await serviceAPI.update(id, data)
       await fetchServices()
@@ -65,6 +68,7 @@ export default function useServices() {
   const deleteService = async (id) => {
     loading.value = true
     error.value = null
+
     try {
       await serviceAPI.delete(id)
       services.value = services.value.filter(s => s.id !== id)
@@ -84,6 +88,6 @@ export default function useServices() {
     getService,
     createService,
     updateService,
-    deleteService,
+    deleteService
   }
 }

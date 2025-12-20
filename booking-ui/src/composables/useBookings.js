@@ -20,10 +20,55 @@ export default function useBookings() {
     }
   }
 
-  const deleteBooking = async (id) => {
-    if (!confirm('Are you sure you want to delete this booking?')) return
+  const getBooking = async (id) => {
     loading.value = true
     error.value = null
+
+    try {
+      const res = await bookingAPI.get(id)
+      return res.data
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const createBooking = async (data) => {
+    loading.value = true
+    error.value = null
+
+    try {
+      await bookingAPI.create(data)
+      await fetchBookings()
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const updateBooking = async (id, data) => {
+    loading.value = true
+    error.value = null
+
+    try {
+      await bookingAPI.update(id, data)
+      await fetchBookings()
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const deleteBooking = async (id) => {
+    loading.value = true
+    error.value = null
+
     try {
       await bookingAPI.delete(id)
       bookings.value = bookings.value.filter(b => b.id !== id)
@@ -41,5 +86,8 @@ export default function useBookings() {
     error,
     fetchBookings,
     deleteBooking,
+    getBooking,
+    createBooking,
+    updateBooking
   }
 }
