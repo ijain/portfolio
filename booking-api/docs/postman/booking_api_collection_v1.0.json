@@ -111,7 +111,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"start_time\": \"2025-10-25T12:00:00.000000Z\",\n    \"end_time\": \"2025-10-25T13:00:00.000000Z\",\n    \"service_id\": \"5\"\n}",
+							"raw": "{\n    \"date\": \"2025-10-25\",\n    \"time\": \"10:30\",\n    \"service_id\": \"5\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -173,7 +173,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"start_time\": \"2025-11-25T12:00:00.000000Z\",\n    \"end_time\": \"2025-11-25T13:00:00.000000Z\",\n    \"service_id\": \"5\"\n}",
+							"raw": "{\n    \"date\": \"2025-11-25\",\n    \"time\": \"13:00\",\n    \"service_id\": \"5\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

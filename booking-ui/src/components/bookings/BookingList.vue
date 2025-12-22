@@ -8,22 +8,20 @@
 
   <div v-else class="grid-table">
     <div class="headers">
-      <div>ID</div>
+      <div class="counter-column">#</div>
       <div>Service</div>
-      <div>User</div>
-      <div>Start Time</div>
-      <div>End Time</div>
+      <div>Date</div>
+      <div>Time</div>
       <div>Status</div>
       <div>Actions</div>
     </div>
 
-    <template v-for="booking in bookings" :key="booking.id">
+    <template v-for="(booking, index) in bookings" :key="booking.id">
       <div class="rows">
-        <div>{{ booking.id }}</div>
+        <div class="counter-column">{{ index + 1 }}</div>
         <div>{{ booking.service.name }}</div>
-        <div>{{ booking.user.name }}</div>
-        <div>{{ new Date(booking.start_time).toLocaleString() }}</div>
-        <div>{{ new Date(booking.end_time).toLocaleString() }}</div>
+        <div>{{ formatDate(booking.date) }}</div>
+        <div>{{ formatTime(booking.date, booking.time) }}</div>
         <div>{{ booking.status }}</div>
         <div>
           <button @click="openEditModal(booking)">Edit</button>
@@ -40,12 +38,10 @@
       @save="handleSave"
       @close="closeModal"
   />
-
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import useBookings from '@/composables/useBookings'
 import BookingModal from '@/components/bookings/BookingModal.vue'
 import '@/assets/styles/table.css'
@@ -53,10 +49,24 @@ import '@/assets/styles/table.css'
 const isModalOpen = ref(false)
 const selectedBooking = ref(null)
 
-const router = useRouter()
-const { bookings, loading, error, fetchBookings, deleteBooking, createBooking, updateBooking } = useBookings()
+const { bookings, loading, error, fetchBookings, deleteBooking,
+  createBooking, updateBooking } = useBookings()
 
 onMounted(fetchBookings)
+
+const formatDate = (dateString) =>
+    new Date(dateString).toLocaleDateString(undefined, {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    })
+
+const formatTime = (dateString, timeString) =>
+    new Date(dateString + 'T' + timeString).toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    })
 
 const openEditModal = (booking) => {
   selectedBooking.value = { ...booking } // shallow copy
@@ -68,13 +78,11 @@ const openAddModal = () => {
   isModalOpen.value = true
 }
 
-// Close modal
 const closeModal = () => {
   isModalOpen.value = false
   selectedBooking.value = null
 }
 
-// Handle save from modal (Add or Edit)
 const handleSave = async (formData) => {
   if (formData.id) {
     await updateBooking(formData.id, formData)

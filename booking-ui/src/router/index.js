@@ -2,8 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Bookings
 import BookingList from '@/components/bookings/BookingList.vue'
-import BookingCreate from '@/components/bookings/BookingCreate.vue'
-import BookingUpdate from '@/components/bookings/BookingUpdate.vue'
 
 // Services
 import ServiceList from '@/components/services/ServiceList.vue'
@@ -19,8 +17,6 @@ const routes = [
 
   // Bookings
   { path: '/bookings', name: 'BookingList', component: BookingList },
-  { path: '/bookings/create', name: 'BookingCreate', component: BookingCreate },
-  { path: '/bookings/update/:id', name: 'BookingUpdate', component: BookingUpdate, props: true },
 
   // Services
   { path: '/services', name: 'ServiceList', component: ServiceList },

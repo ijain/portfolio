@@ -9,13 +9,14 @@
 }
 
 .modal {
-    background: #f0f0f0;
+    background: #fff;
     padding: 2rem;
     border-radius: 0.5rem;
     width: 400px;
     max-width: 90%;
     position: relative;
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    color: var(--burgundy-dark)
 }
 
 .modal-close {
@@ -31,4 +32,12 @@
 .modal h2 {
     color: var(--burgundy-dark);
     text-align: center;
+}
+
+.modal select {
+    background: #fff;
+}
+
+.modal label {
+    color: var(--burgundy-dark);
 }

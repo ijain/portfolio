@@ -37,30 +37,32 @@ type Mutation {
   deleteService(id: ID!): Service
 
   "Create a new booking (must pass authenticated user_id)."
-  createBooking(user_id: ID!, service_id: ID!, start_time: DateTime!, end_time: DateTime!, status: String): Booking
+  createBooking(user_id: ID!, service_id: ID!, date: Date!, time: Time!, duration_hours: Int, duration_minutes: Int, status: String): Booking
 
-  updateBooking(id: ID!, start_time: DateTime, end_time: DateTime, status: String): Booking
+  updateBooking(id: ID!, date: Date, time: Time, duration_hours: Int, duration_minutes: Int, status: String): Booking
   deleteBooking(id: ID!): Booking
 }
 
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2025-10-26 14:30:00`."
 scalar DateTime
 
+# A date string with format `Y-m-d`, e.g. `2025-10-26`.
+scalar Date
+
+# A time string with format `H:i:s`, e.g. `14:30:00`.
+scalar Time
+
 type User {
   id: ID!
   name: String!
   email: String!
   email_verified_at: DateTime
-  created_at: DateTime!
-  updated_at: DateTime!
 }
 
 type Service {
   id: ID!
   name: String!
   description: String
-  created_at: DateTime!
-  updated_at: DateTime!
   bookings: [Booking!]!
 }
 
@@ -68,8 +70,10 @@ type Booking {
   id: ID!
   user: User!
   service: Service!
-  start_time: DateTime!
-  end_time: DateTime!
+  date: Date!
+  time: Time!
+  duration_hours: Int
+  duration_minutes: Int
   status: String!
 }
 
