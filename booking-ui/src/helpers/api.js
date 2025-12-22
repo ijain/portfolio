@@ -31,7 +31,7 @@ export const authAPI = {
 
 // Booking API
 export const bookingAPI = {
-  getAll: () => api.get('/bookings'),
+  getAll: (params = {}) => api.get('/bookings', { params }),
   get: (id) => api.get(`/bookings/${id}`),
   create: (data) => api.post('/bookings', data),
   update: (id, data) => api.put(`/bookings/${id}`, data),
@@ -40,7 +40,7 @@ export const bookingAPI = {
 
 // Service API
 export const serviceAPI = {
-  getAll: () => api.get('/services'),
+  getAll: (params = {}) => api.get('/services', { params }),
   get: (id) => api.get(`/services/${id}`),
   create: (data) => api.post('/services', data),
   update: (id, data) => api.put(`/services/${id}`, data),

@@ -18,7 +18,7 @@
 
     <template v-for="(booking, index) in bookings" :key="booking.id">
       <div class="rows">
-        <div class="counter-column">{{ index + 1 }}</div>
+        <div class="counter-column">{{ (pagination.currentPage - 1) * pagination.perPage + index + 1 }}.</div>
         <div>{{ booking.service.name }}</div>
         <div>{{ formatDate(booking.date) }}</div>
         <div>{{ formatTime(booking.date, booking.time) }}</div>
@@ -30,6 +30,16 @@
       </div>
     </template>
 
+    <div v-if="pagination.lastPage > 1" class="pagination">
+      <button :disabled="pagination.currentPage === 1"
+              @click="goToPage(pagination.currentPage - 1)">Prev</button>
+
+      <button v-for="page in pagination.lastPage" :key="page"
+              :class="{ active: page === pagination.currentPage }" @click="goToPage(page)">{{ page }}</button>
+
+      <button :disabled="pagination.currentPage === pagination.lastPage"
+              @click="goToPage(pagination.currentPage + 1)">Next</button>
+    </div>
   </div>
 
   <BookingModal
@@ -45,14 +55,21 @@ import { ref, onMounted } from 'vue'
 import useBookings from '@/composables/useBookings'
 import BookingModal from '@/components/bookings/BookingModal.vue'
 import '@/assets/styles/table.css'
+import '@/assets/styles/pagination.css'
 
 const isModalOpen = ref(false)
 const selectedBooking = ref(null)
-
-const { bookings, loading, error, fetchBookings, deleteBooking,
+const currentPage = ref(1)
+const { bookings, pagination, loading, error, fetchBookings, deleteBooking,
   createBooking, updateBooking } = useBookings()
 
-onMounted(fetchBookings)
+onMounted(() => fetchBookings(currentPage.value))
+
+const goToPage = (page) => {
+  if (page < 1 || page > pagination.value.lastPage) return
+  currentPage.value = page
+  fetchBookings(page)
+}
 
 const formatDate = (dateString) =>
     new Date(dateString).toLocaleDateString(undefined, {

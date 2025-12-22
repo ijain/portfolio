@@ -14,7 +14,7 @@
 
 .grid-table .headers {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    grid-template-columns: 40px repeat(auto-fit, minmax(50px, 1fr));
     padding: 10px;
     font-weight: bold;
     background-color: #b35c66;
@@ -24,7 +24,7 @@
 
 .grid-table .rows {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    grid-template-columns: 40px repeat(auto-fit, minmax(50px, 1fr));
     padding: 10px;
     background-color: #f0f0f0;
     font-size: 13px;

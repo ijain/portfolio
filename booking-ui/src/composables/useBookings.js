@@ -6,15 +6,29 @@ export default function useBookings() {
   const loading = ref(false)
   const error = ref(null)
 
-  const fetchBookings = async () => {
+  const pagination = ref({
+    currentPage: 1,
+    lastPage: 1,
+    perPage: 10,
+    total: 0,
+  })
+
+  const fetchBookings = async (page = pagination.value.currentPage || 1) => {
     loading.value = true
     error.value = null
+
     try {
-      const res = await bookingAPI.getAll()
+      const res = await bookingAPI.getAll({ page })
       bookings.value = res.data.data
+
+      pagination.value = {
+        currentPage: res.data.current_page,
+        lastPage: res.data.last_page,
+        perPage: res.data.per_page,
+        total: res.data.total,
+      }
     } catch (err) {
       error.value = err.response?.data?.message || err.message
-      console.error(err)
     } finally {
       loading.value = false
     }
@@ -41,7 +55,7 @@ export default function useBookings() {
 
     try {
       await bookingAPI.create(data)
-      await fetchBookings()
+      await fetchBookings(pagination.value.currentPage)
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -56,7 +70,7 @@ export default function useBookings() {
 
     try {
       await bookingAPI.update(id, data)
-      await fetchBookings()
+      await fetchBookings(pagination.value.currentPage)
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -71,7 +85,7 @@ export default function useBookings() {
 
     try {
       await bookingAPI.delete(id)
-      bookings.value = bookings.value.filter(b => b.id !== id)
+      bookings.value = bookings.value.filter(booking => booking.id !== id)
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
@@ -82,6 +96,7 @@ export default function useBookings() {
 
   return {
     bookings,
+    pagination,
     loading,
     error,
     fetchBookings,
