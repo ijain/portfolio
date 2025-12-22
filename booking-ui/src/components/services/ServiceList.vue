@@ -50,10 +50,8 @@
 import {onMounted, ref} from 'vue'
 import useServices from '@/composables/useServices'
 import ServiceModal from '@/components/services/ServiceModal.vue'
-import { useRouter } from 'vue-router'
 import '@/assets/styles/table.css'
 import '@/assets/styles/pagination.css'
-import BookingModal from "@/components/bookings/BookingModal.vue";
 
 const isModalOpen = ref(false)
 const selectedService = ref(null)
