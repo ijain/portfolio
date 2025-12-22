@@ -42,11 +42,7 @@ class Products {
 
         try {
             await this.api.delete(`/products/${id}`);
-
-            const current_page = document.querySelector('.page-btn.active');
-            const page_num =  current_page ? Number(current_page.dataset.page) : 1;
-
-            await this.fetchAndRenderProducts(page_num);
+            await this.fetchAndRenderProducts(1);
         } catch (err) {
             alert(`Delete error: ${err.message}`);
         }
@@ -119,7 +115,16 @@ class Products {
         img.alt = product.name;
         img.loading = 'lazy';
         img.src = image;
-        img.onerror = () => { img.src = 'assets/images/product-no-image.svg'; };
+
+        const fallback = `${this.api.base_url}/storage/assets/images/product-no-image.svg`;
+        img.onerror = () => {
+            if (img.src !== fallback) {
+                img.src = fallback;
+            } else {
+                img.style.display = 'none'; // stop further requests
+            }
+        };
+
         return img;
     }
 

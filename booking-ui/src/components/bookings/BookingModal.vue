@@ -70,16 +70,6 @@ const statuses = [
   { value: 'cancelled', label: 'Cancelled' },
 ]
 
-const hoursOptions = []
-for (let hour = 0; hour <= 24; hour++) hoursOptions.push(hour)
-
-const minutesOptions = []
-for (let minute = 0; minute <= 59; minute++) minutesOptions.push(minute)
-
-/* ────────────────
-   FLATPICKR
-──────────────── */
-
 const datePicker = ref(null)
 const timePicker = ref(null)
 const durationPicker = ref(null)
@@ -90,9 +80,20 @@ let durationPickerInstance = null
 
 onMounted(fetchServices)
 
-/* Modal-safe lifecycle */
+const resetInputs = () => {
+  form.date = ''
+  form.time = '00:00'
+  form.duration_hours = 0
+  form.duration_minutes = 0
+  form.status = 'pending'
+  form.service_id = ''
+
+  if (datePicker.value) datePicker.value.value = ''
+  if (timePicker.value) timePicker.value.value = ''
+  if (durationPicker.value) durationPicker.value.value = ''
+}
+
 watch(() => props.visible, async (isVisible) => {
-  // DESTROY on close
   if (!isVisible) {
     datePickerInstance?.destroy()
     timePickerInstance?.destroy()
@@ -103,8 +104,11 @@ watch(() => props.visible, async (isVisible) => {
     return
   }
 
-  // INIT on open
   await nextTick()
+
+  if (!props.booking) {
+    resetInputs()
+  }
 
   datePickerInstance = flatpickr(datePicker.value, {
     dateFormat: 'Y-m-d',
@@ -149,10 +153,6 @@ watch(() => props.visible, async (isVisible) => {
   }
 })
 
-/* ────────────────
-   WATCH BOOKING
-──────────────── */
-
 watch(() => props.booking, (val) => {
   if (val) {
     form.date = typeof val.date === 'string'
@@ -173,13 +173,6 @@ watch(() => props.booking, (val) => {
     const hh = String(form.duration_hours).padStart(2, '0')
     const mm = String(form.duration_minutes).padStart(2, '0')
     durationPickerInstance?.setDate(`${hh}:${mm}`, false)
-  } else {
-    form.date = ''
-    form.time = '00:00'
-    form.duration_hours = 0
-    form.duration_minutes = 0
-    form.status = 'pending'
-    form.service_id = ''
   }
 }, { immediate: true })
 

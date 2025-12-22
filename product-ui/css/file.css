@@ -7,13 +7,11 @@
 
 .file-label input[type="file"] {
     display: none;
-    /* hide default input */
 }
 
 .file-btn {
-    background-color: #f1c40f;
-    /* yellow */
-    color: #000;
+    background-color: #7e57c2;
+    color: #fff;
     padding: 0.3em 0.6em;
     border-radius: 4px;
     cursor: pointer;
@@ -22,7 +20,7 @@
 }
 
 .file-btn:hover {
-    background-color: #ffd633;
+    background-color: #9575cd;
 }
 
 #file-name {
