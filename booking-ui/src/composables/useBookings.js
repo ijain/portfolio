@@ -86,6 +86,7 @@ export default function useBookings() {
     try {
       await bookingAPI.delete(id)
       bookings.value = bookings.value.filter(booking => booking.id !== id)
+      await fetchBookings(pagination.value.currentPage)
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err

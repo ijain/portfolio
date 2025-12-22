@@ -111,14 +111,8 @@ const handleSave = async (formData) => {
 }
 
 const deleteBookingHandler = async (id) => {
-  if (!confirm('Are you sure you want to delete this booking?')) {
-    return
+  if (confirm('Are you sure you want to delete this booking?')) {
+    await deleteBooking(id)
   }
-  await deleteBooking(id)
-
-  if (bookings.value.length === 0 && pagination.currentPage > 1) {
-    currentPage.value = pagination.currentPage - 1
-  }
-  fetchBookings(currentPage.value)
 }
 </script>
