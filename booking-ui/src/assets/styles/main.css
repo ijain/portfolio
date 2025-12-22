@@ -76,9 +76,8 @@ main {
 
 footer {
   grid-area: footer;
-  padding: 1px 20px;
+  padding: 1px 20px 20px 20px;
   font-size: 14px;
-  margin: 20px;
 }
 
 a {
