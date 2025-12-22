@@ -1,32 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-// Bookings
 import BookingList from '@/components/bookings/BookingList.vue'
-
-// Services
 import ServiceList from '@/components/services/ServiceList.vue'
-import ServiceCreate from '@/components/services/ServiceCreate.vue'
-import ServiceUpdate from '@/components/services/ServiceUpdate.vue'
-
-// Auth
 import Login from '@/components/auth/Login.vue'
 
 const routes = [
   { path: '/', redirect: '/bookings' },
   { path: '/login', name: 'Login', component: Login },
-
-  // Bookings
   { path: '/bookings', name: 'BookingList', component: BookingList },
-
-  // Services
-  { path: '/services', name: 'ServiceList', component: ServiceList },
-  { path: '/services/create', name: 'ServiceCreate', component: ServiceCreate },
-  { path: '/services/update/:id', name: 'ServiceUpdate', component: ServiceUpdate, props: true },
+  { path: '/services', name: 'ServiceList', component: ServiceList }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
 
 router.beforeEach((to, from, next) => {
@@ -34,16 +20,12 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path)
   const token = localStorage.getItem('token')
 
-  // If NOT logged in and trying to access protected page → redirect to login
   if (authRequired && !token) {
     return next('/login')
   }
-
-  // If logged in and trying to access /login → redirect to bookings
   if (to.path === '/login' && token) {
     return next('/bookings')
   }
-
   next()
 })
 
