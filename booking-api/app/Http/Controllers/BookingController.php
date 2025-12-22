@@ -31,7 +31,7 @@ class BookingController extends Controller
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
             'date' => 'required|date',
-            'time' => 'required|time',
+            'time' => 'required|date_format:H:i',
             'duration_hours' => 'sometimes|integer',
             'duration_minutes' => 'sometimes|integer',
             'status' => 'sometimes|in:pending,confirmed,cancelled'
@@ -62,7 +62,7 @@ class BookingController extends Controller
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
             'date' => 'required|date',
-            'time' => 'required|time',
+            'time' => 'required|date_format:H:i',
             'duration_hours' => 'sometimes|integer',
             'duration_minutes' => 'sometimes|integer',
             'status' => 'sometimes|in:pending,confirmed,cancelled'
