@@ -210,6 +210,11 @@ class ProductModal {
             return false;
         }
 
+        if (value.length > 60) {
+            this.#showError(this.nameInput, 'Name cannot exceed 60 characters.');
+            return false;
+        }
+
         this.#clearError(this.nameInput);
         return true;
     }
