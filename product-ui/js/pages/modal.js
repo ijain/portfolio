@@ -21,10 +21,11 @@ class ProductModal {
 
         const form = document.createElement('form');
         form.id = 'modal-form';
+        form.noValidate = true; // disable HTML validation
 
         this.nameInput = this.#createInput({ labelText: 'Name', id: 'modal-name', value: product ? product.name : '' }, form);
         this.descInput = this.#createInput({ labelText: 'Description', id: 'modal-description', value: product ? product.description || '' : '' }, form);
-        this.priceInput = this.#createInput({ labelText: 'Price', id: 'modal-price', type: 'number', value: product ? product.price : '' }, form);
+        this.priceInput = this.#createInput({ labelText: 'Price', id: 'modal-price', type: 'text', value: product ? product.price : '' }, form);
         this.stockInput = this.#createInput({ labelText: 'In stock', id: 'modal-stock', type: 'number', value: product ? product.stock : 0 }, form);
 
         const fileLabel = document.createElement('label');
@@ -40,7 +41,9 @@ class ProductModal {
 
         this.fileNameSpan = document.createElement('span');
         this.fileNameSpan.id = 'file-name';
-        this.fileNameSpan.textContent = product && product.image ? this.#truncateFilename(product.image) : 'No file selected';
+        this.fileNameSpan.textContent = product && product.image
+            ? this.#truncateFilename(product.image)
+            : 'No file selected';
 
         fileLabel.appendChild(this.fileInput);
         fileLabel.appendChild(fileBtn);
@@ -97,22 +100,74 @@ class ProductModal {
         });
 
         this.nameInput.addEventListener('input', () => this.#validateName());
-        this.priceInput.addEventListener('input', () => this.#validatePrice());
+        this.descInput.addEventListener('input', () => this.#validateDescription());
         this.stockInput.addEventListener('input', () => this.#validateStock());
+
+        // unified price input handler
+        this.priceInput.addEventListener('input', () => {
+            let value = this.priceInput.value.replace(',', '.'); // allow comma
+
+            const selectionStart = this.priceInput.selectionStart;
+            let [intPart, decPart] = value.split('.');
+
+            intPart = intPart.slice(0, 6); // max 6 digits before dot
+
+            if (decPart !== undefined) {
+                decPart = decPart.slice(0, 2); // max 2 decimals
+                value = intPart + '.' + decPart;
+            } else {
+                value = intPart;
+            }
+
+            this.priceInput.value = value;
+            this.priceInput.setSelectionRange(selectionStart, selectionStart);
+            this.#validatePrice();
+        });
+
+        this.priceInput.addEventListener('blur', () => {
+            let value = parseFloat(this.priceInput.value.replace(',', '.'));
+
+            if (!isNaN(value)) {
+                this.priceInput.value = value.toFixed(2);
+            }
+        });
+
+        this.priceInput.addEventListener('keydown', (e) => {
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+
+            if (allowedKeys.includes(e.key)) return; // allow navigation
+
+            if (/^\d$/.test(e.key)) {
+                const value = this.priceInput.value;
+                const selectionStart = this.priceInput.selectionStart;
+
+                const dotIndex = value.indexOf('.');
+                if (dotIndex !== -1 && selectionStart > dotIndex) {
+                    // Prevent typing more than 2 decimals
+                    const decimals = value.split('.')[1] || '';
+                    if (decimals.length >= 2 && this.priceInput.selectionStart > dotIndex) {
+                        e.preventDefault();
+                    }
+                }
+
+                return; // allow digit
+            }
+
+            // Allow dot/comma if not already present
+            if ((e.key === '.' || e.key === ',') && !this.priceInput.value.includes('.')) return;
+
+            e.preventDefault(); // block everything else
+        });
+
 
         this.form.addEventListener('submit', (e) => this.#handleSubmit(e));
     }
 
     #truncateFilename(name, maxLength = 20) {
-        if (!name) {
-            return '';
-        }
+        if (!name) return '';
 
         const dotIndex = name.lastIndexOf('.');
-
-        if (dotIndex === -1 || name.length <= maxLength) {
-            return name;
-        }
+        if (dotIndex === -1 || name.length <= maxLength) return name;
 
         const ext = name.slice(dotIndex);
         const base = name.slice(0, dotIndex);
@@ -156,7 +211,23 @@ class ProductModal {
         }
 
         this.#clearError(this.nameInput);
+        return true;
+    }
 
+    #validateDescription() {
+        const value = this.descInput.value.trim();
+
+        if (!value) {
+            this.#showError(this.descInput, 'Description is required.');
+            return false;
+        }
+
+        if (value.length > 255) {
+            this.#showError(this.descInput, 'Description cannot exceed 255 characters.');
+            return false;
+        }
+
+        this.#clearError(this.descInput);
         return true;
     }
 
@@ -169,7 +240,6 @@ class ProductModal {
         }
 
         this.#clearError(this.priceInput);
-
         return true;
     }
 
@@ -182,20 +252,20 @@ class ProductModal {
         }
 
         this.#clearError(this.stockInput);
-
         return true;
     }
 
     #validateAll() {
-        return this.#validateName() && this.#validatePrice() && this.#validateStock();
+        return this.#validateName()
+            && this.#validateDescription()
+            && this.#validatePrice()
+            && this.#validateStock();
     }
 
     async #handleSubmit(e) {
         e.preventDefault();
 
-        if (!this.#validateAll()) {
-            return;
-        }
+        if (!this.#validateAll()) return;
 
         const name = this.nameInput.value;
         const description = this.descInput.value;

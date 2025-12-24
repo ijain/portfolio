@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
@@ -18,9 +19,9 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->words(3, true),
-            'description' => $this->faker->sentence(),
+            'description' => substr($this->faker->sentence(), 0, 255),
             'price' => $this->faker->randomFloat(2, 5, 500),
-            'image' => 'product_' . rand(100, 999) . '.' . ['jpg','png'][rand(0,1)],
+            'image' => 'product-image',
             'stock' => $this->faker->numberBetween(0, 100),
         ];
     }

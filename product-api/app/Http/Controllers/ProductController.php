@@ -4,20 +4,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    // List all products
     public function index(Request $request): LengthAwarePaginator
     {
-         // Get 'per_page' from query params, default to 10
         $limit = (int) $request->query('limit', 10);
-
-        // Optional: enforce a maximum limit for safety
         $limit = min($limit, 100);
 
         return Product::select([ 'id', 'name', 'description', 'price', 'stock', 'image'])
@@ -25,7 +21,6 @@ class ProductController extends Controller
             ->paginate($limit);
     }
 
-    // Show a single product
     public function show(Product $product): Product
     {
         $product->setHidden(['updated_at', 'created_at']);
@@ -38,7 +33,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price' => 'required|numeric',
             'image' => 'nullable|string',
             'stock' => 'required|integer|min:0',
@@ -50,12 +45,11 @@ class ProductController extends Controller
         return $product;
     }
 
-    // Update an existing product
     public function update(Request $request, Product $product): Product
     {
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price' => 'sometimes|required|numeric',
             'image' => 'nullable|string',
             'stock' => 'sometimes|required|integer|min:0',
@@ -67,10 +61,17 @@ class ProductController extends Controller
         return $product;
     }
 
-    // Delete a product
     public function destroy(Product $product): JsonResponse
     {
-         if ($product->delete()) {
+        // Delete the image if it exists
+        if ($product->image) {
+            $imagePath = 'public/products/' . $product->image;
+            if (Storage::exists($imagePath)) {
+                Storage::delete($imagePath);
+            }
+        }
+
+        if ($product->delete()) {
             return response()->json(['message' => 'Product deleted successfully.'], 200);
         }
 
