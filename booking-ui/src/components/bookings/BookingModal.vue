@@ -4,20 +4,29 @@
     <form @submit.prevent="submitForm">
       <div>
         <label class="block mb-1">Service</label>
-        <select v-model="form.service_id" required>
+        <select v-model="form.service_id" @change="errors.service_id = ''">
           <option disabled value="">Select service</option>
           <option v-for="service in services" :key="service.id" :value="service.id">
             {{ service.name }}
           </option>
         </select>
+        <p v-if="errors.service_id" class="error">
+          {{ errors.service_id }}
+        </p>
       </div>
       <div>
         <label>Date</label>
-        <input type="text" ref="datePicker" placeholder="Select date" required />
+        <input type="text" ref="datePicker" placeholder="Select date" @input="errors.date = ''" />
+        <p v-if="errors.date" class="error">
+          {{ errors.date }}
+        </p>
       </div>
       <div>
         <label>Time</label>
-        <input type="text" ref="timePicker" placeholder="Select time" required />
+        <input type="text" ref="timePicker" placeholder="Select time" @input="errors.time = ''" />
+        <p v-if="errors.time" class="error">
+          {{ errors.time }}
+        </p>
       </div>
       <div>
         <label>Duration</label>
@@ -25,7 +34,7 @@
       </div>
       <div v-if="booking">
         <label>Status</label>
-        <select v-model="form.status" required>
+        <select v-model="form.status">
           <option v-for="status in statuses" :key="status.value" :value="status.value">
             {{ status.label }}
           </option>
@@ -104,6 +113,8 @@ watch(() => props.visible, async (isVisible) => {
     return
   }
 
+  Object.keys(errors).forEach(key => errors[key] = '')
+
   await nextTick()
 
   if (!props.booking) {
@@ -124,7 +135,7 @@ watch(() => props.visible, async (isVisible) => {
     noCalendar: true,
     dateFormat: 'H:i',
     time_24hr: true,
-    onChange: (_, dateStr) => {
+    onChange: (selectedTime, dateStr) => {
       form.time = dateStr
     }
   })
@@ -136,16 +147,25 @@ watch(() => props.visible, async (isVisible) => {
     time_24hr: true,
     defaultHour: 0,
     defaultMinute: 0,
-    onChange: (_, timeStr) => {
-      if (!timeStr) return
+    onChange: (selectedTime, timeStr) => {
+      if (!timeStr) {
+        return
+      }
+
       const [h, m] = timeStr.split(':').map(Number)
       form.duration_hours = h
       form.duration_minutes = m
     }
   })
 
-  if (form.date) datePickerInstance.setDate(form.date, false)
-  if (form.time) timePickerInstance.setDate(form.time, false)
+  if (form.date) {
+    datePickerInstance.setDate(form.date, false)
+  }
+
+  if (form.time) {
+    timePickerInstance.setDate(form.time, false)
+  }
+
   if (form.duration_hours || form.duration_minutes) {
     const hh = String(form.duration_hours).padStart(2, '0')
     const mm = String(form.duration_minutes).padStart(2, '0')
@@ -170,14 +190,50 @@ watch(() => props.booking, (val) => {
 
     datePickerInstance?.setDate(form.date, false)
     timePickerInstance?.setDate(form.time, false)
+
     const hh = String(form.duration_hours).padStart(2, '0')
     const mm = String(form.duration_minutes).padStart(2, '0')
     durationPickerInstance?.setDate(`${hh}:${mm}`, false)
   }
 }, { immediate: true })
 
+const errors = reactive({
+  service_id: '',
+  date: '',
+  time: ''
+})
+
+const validate = () => {
+  errors.service_id = ''
+  errors.date = ''
+  errors.time = ''
+
+  let valid = true
+
+  if (!form.service_id) {
+    errors.service_id = 'Service is required'
+    valid = false
+  }
+
+  if (!form.date) {
+    errors.date = 'Date is required'
+    valid = false
+  }
+
+  if (!form.time || form.time === '00:00') {
+    errors.time = 'Time is required'
+    valid = false
+  }
+
+  return valid
+}
+
 const submitForm = async () => {
+  if (!validate()) {
+    return
+  }
   loading.value = true
+
   try {
     emit('save', { ...form, id: props.booking?.id })
   } finally {

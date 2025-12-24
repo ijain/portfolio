@@ -86,7 +86,13 @@ export default function useServices() {
     try {
       await serviceAPI.delete(id)
       services.value = services.value.filter(service => service.id !== id)
-      await fetchServices(pagination.value.currentPage)
+      let nextPage = pagination.value.currentPage
+
+      if (services.value.length === 0 && pagination.value.currentPage > 1) {
+        nextPage = 1
+      }
+
+      await fetchServices(nextPage)
     } catch (err) {
       error.value = err.response?.data?.message || err.message
       throw err
